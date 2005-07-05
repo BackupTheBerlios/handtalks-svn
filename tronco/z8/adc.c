@@ -21,25 +21,10 @@
 #include "main.h"
 
 unsigned char  valueH, valueL;
-extern char adc_data_available;
+char adc_data_available;
+unsigned int ana[SENSORES];
+unsigned char sensor = 0;
 
-//Selected internal reference 2.0Volts default 
-void init_adc(void)
-{
-	SET_VECTOR(ADC, isr_ADC);				// Pass the vector number and the ISR address
-									// to be placed into the interrupt table 
-	ADCCTL0 = ADC_TEMP_CHANNEL; 			// ADC conversion disable,
-											//Select ADC Temperature Sensor Input 
-											//Internal reference voltage 2.0V,disable
-											//external reference,single shot conversion
-
-//	ADCCTL1 |= ADC_BUF_INPUT_X1;			// Single-ended, buffered with unity gain
-	ADCCTL1 = 0X80;		     			// Single-ended, buffered with unity gain
-
-	IRQ0E1 |= ADC_INT_EN;					// Enable ADC interrupts
-	IRQ0E0 |= ADC_INT_EN;					// 				
-
-}		
 
 
 /**************************************************************************************/
@@ -48,14 +33,92 @@ void init_adc(void)
 #pragma interrupt
 void isr_ADC(void)  
 {
-	
-
 	DI();
-//	printf("int_adc\n");
 	valueH = ADHR;										// Get ADC Data High  		
 	valueL = ADLR;										// Read the ADC low data 
 	adc_data_available = YES;																
-	ADCCTL0  |= ADC_EN;									// ADC Conversion Enable			
+//	ADCCTL0  |= ADC_CEN;								// ADC Conversion Enable			
 	EI();
 } 
+
+
+//Selected internal reference 2.0Volts default 
+void inicia_adc(void)
+{
+	SET_VECTOR(ADC, isr_ADC);		
+
+	ADCCTL0 &= ~ADC_REFSELL;	     		// 2V ref
+
+	ADCCTL1 |= ADC_BUF_INPUT_X1;			// Single-ended, buffered with unity gain
+	ADCCTL1 |= ADC_REFSELH;		     		// 2V ref
+
+	IRQ0E1 |= ADC_INT_EN;					// Enable ADC interrupts
+	IRQ0E0 |= ADC_INT_EN;					// 				
+/*
+	PAADDR = P_AF;   PACTL |= 0x0A;	//  - Habilita ANA1, ANA2 e ANA3
+	PAADDR = P_AFS1; PACTL &= 0xFA;	//  
+	PAADDR = P_AFS2; PACTL &= 0xFA;	// 
+*/
+	PAADDR = P_AF;   PACTL |= 0x02;	//  - Habilita ANA1 e ANA3
+	PAADDR = P_AFS1; PACTL &= 0xF2;	//  
+	PAADDR = P_AFS2; PACTL &= 0xF2;	// 
+
+	PAADDR = P_NUL; 				//  Clear to protect sub register
+}		
+
+void captura_adc (unsigned char ana)
+{
+	switch (ana)
+	{
+		case 1:
+			ADCCTL0 = ADC_ANAIN_ANA1; 	
+			break;
+		case 2:
+//			ADCCTL0 = ADC_ANAIN_ANA2; 	
+//			break;
+		case 3:
+			ADCCTL0 = ADC_ANAIN_ANA3; 	
+			break;
+		default:
+			break;
+	}
+	ADCCTL0 |= ADC_CEN;
+}
+
+
+
+unsigned int actual_temp()				
+{
+	unsigned int valueH_new, valueL_new;
+	if(adc_data_available == YES)			//check if new data available
+	{
+		//Read the temp
+		adc_data_available = NO;
+		valueH_new = (unsigned char)valueH;
+		valueL_new = (unsigned char)valueL;
+		valueL_new = valueL_new >> 5;									// Shift right 5 bits of ADC Data Low
+		
+		valueH_new = valueH_new <<3;									// Get Temp Data High byte (Hex) 
+		
+		valueH_new |= valueL_new;
+	}
+
+    return(valueH_new);
+}//End of Actual temperature function
+
+
+void le_sensores (void)
+{
+	if (adc_data_available == YES || sensor == 1)
+	{
+		adc_data_available = NO;
+		ana[sensor] = actual_temp ();
+
+		if (sensor <= SENSORES)
+			captura_adc (sensor);
+
+		sensor = (++sensor) % (SENSORES + 2);
+	}
+}
+
 

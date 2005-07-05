@@ -1,4 +1,4 @@
-<project type="Executable" configuration="Debug" created-by="04081808" modified-by="04120301">
+<project type="Executable" configuration="Debug" created-by="04081808" modified-by="05060303">
 <cpu>Z8F042AXB</cpu>
 
 <!-- file information -->
@@ -6,10 +6,9 @@
 <file filter-key="">.\zsldevinit.asm</file>
 <file filter-key="">.\gpio.c</file>
 <file filter-key="">.\main.c</file>
-<file filter-key="">.\test_button.c</file>
-<file filter-key="">.\timer.c</file>
 <file filter-key="">.\uart.c</file>
 <file filter-key="">.\adc.c</file>
+<file filter-key="">.\gatilho.c</file>
 </files>
 
 <!-- configuration information -->
@@ -111,7 +110,7 @@
 </tool>
 <tool name="General">
 <options>
-<option name="outputdir" type="string" change-action="compile">.</option>
+<option name="outputdir" type="string" change-action="compile">bin\</option>
 <option name="tempath" type="string" change-action="none"></option>
 </options>
 </tool>
@@ -136,7 +135,7 @@
 <option name="map" type="boolean" change-action="none">true</option>
 <option name="nvds" type="string" change-action="build">0-7F</option>
 <option name="objlibmods" type="string" change-action="build"></option>
-<option name="of" type="string" change-action="build">.\ledblink</option>
+<option name="of" type="string" change-action="build">bin\handtalks</option>
 <option name="quiet" type="boolean" change-action="none">TRUE</option>
 <option name="rdata" type="string" change-action="build">20-FF</option>
 <option name="relist" type="boolean" change-action="build">false</option>
@@ -254,7 +253,7 @@
 </tool>
 <tool name="General">
 <options>
-<option name="outputdir" type="string" change-action="compile">.</option>
+<option name="outputdir" type="string" change-action="compile">bin\</option>
 <option name="tempath" type="string" change-action="none"></option>
 </options>
 </tool>
@@ -279,7 +278,7 @@
 <option name="map" type="boolean" change-action="none">true</option>
 <option name="nvds" type="string" change-action="build">0-7F</option>
 <option name="objlibmods" type="string" change-action="build"></option>
-<option name="of" type="string" change-action="build">.\ledblink</option>
+<option name="of" type="string" change-action="build">bin\handtalks</option>
 <option name="quiet" type="boolean" change-action="none">TRUE</option>
 <option name="rdata" type="string" change-action="build">20-FF</option>
 <option name="relist" type="boolean" change-action="build">false</option>
@@ -304,14 +303,23 @@
 
 <!-- watch information -->
 <watch-elements>
+<watch-element expression="sensor" />
+<watch-element expression="ana" />
 </watch-elements>
 
 <!-- breakpoint information -->
 <breakpoints>
+<breakpoint temporary="false" enabled="true" >
+<line-number>115</line-number>
+<pathname>E:\Andre\projetos\handtalks-z8\adc.c</pathname>
+<address>1097</address>
+<command></command>
+<preserve-type>0</preserve-type>
+</breakpoint>
 </breakpoints>
 
 <!-- ice event information -->
-<ice-events count="4">
+<ice-events count="4" enable="0" breakOnFull="0">
 <ice-event>
 <data>000000000000</data>
 <mask>000000000000</mask>

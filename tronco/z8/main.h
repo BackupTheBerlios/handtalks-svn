@@ -3,19 +3,27 @@
  *  All Rights Reserved
  *************************************************/
 
-#ifndef MAIN
-#define MAIN
+#ifndef MAIN_H
+#define MAIN_H
 
-///////////////////////////////////////////////////////////
-// Definition Program status
-#define RUN			0
-#define BUSY		1
-#define UP			0
-#define DOWN		1
-#define HIGH_SET_TEMP	40			//Higher temperature limit 
-#define LOW_SET_TEMP    10          //Lower  temperature limit
+
 #define YES		(unsigned char)1
 #define NO		(unsigned char)0
+
+
+//////////////////////////////////////////////////////////////////////////////
+// GPIO sub-register mnemonics
+#define P_NUL    0x00  // No function
+#define P_DD     0x01  // Data Direction
+#define P_AF     0x02  // Alternate Function
+#define P_0C     0x03  // Output Control (Open-Drain)
+#define P_HDE    0x04  // High Drive Enable
+#define P_SMRE   0x05  // STOP Mode Recovery Source Enable
+#define P_PUE    0x06  // Pull-up Enable
+#define P_AFS1   0x07  // Alternate Function Set 1
+#define P_AFS2   0x08  // Alternate Function Set 2
+                       // 09H–FFH No function
+
 
 ///////////////////////////////////////////////////////////
 // Function Prototypes
@@ -28,4 +36,4 @@ void init_test_button_gpio(void);
 void turn_off_led(void);
 void turn_on_led(void);
 
-#endif
+#endif // MAIN_H

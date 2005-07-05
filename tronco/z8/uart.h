@@ -3,11 +3,12 @@
  *  All Rights Reserved
  *************************************************/
 
-#ifndef UART
-#define UART
+#ifndef UART_H
+#define UART_H
 
 ///////////////////////////////////////////////////////////
 //Function
-void init_uart0(void);
-char putch(char c);
-#endif
+void inicia_uart0(void);
+//char putch(char c);
+
+#endif // UART_H
