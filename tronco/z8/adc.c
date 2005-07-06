@@ -54,15 +54,15 @@ void inicia_adc(void)
 
 	IRQ0E1 |= ADC_INT_EN;					// Enable ADC interrupts
 	IRQ0E0 |= ADC_INT_EN;					// 				
+
+	PAADDR = P_AF;   PACTL |= 0x1A;	//  - Habilita ANA1, ANA2 e ANA3
+	PAADDR = P_AFS1; PACTL |= 0x1A;	//  
+	PAADDR = P_AFS2; PACTL |= 0x1A;	// 
 /*
-	PAADDR = P_AF;   PACTL |= 0x0A;	//  - Habilita ANA1, ANA2 e ANA3
-	PAADDR = P_AFS1; PACTL &= 0xFA;	//  
-	PAADDR = P_AFS2; PACTL &= 0xFA;	// 
-*/
 	PAADDR = P_AF;   PACTL |= 0x02;	//  - Habilita ANA1 e ANA3
 	PAADDR = P_AFS1; PACTL &= 0xF2;	//  
 	PAADDR = P_AFS2; PACTL &= 0xF2;	// 
-
+*/
 	PAADDR = P_NUL; 				//  Clear to protect sub register
 }		
 

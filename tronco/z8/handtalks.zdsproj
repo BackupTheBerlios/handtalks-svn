@@ -309,13 +309,6 @@
 
 <!-- breakpoint information -->
 <breakpoints>
-<breakpoint temporary="false" enabled="true" >
-<line-number>115</line-number>
-<pathname>E:\Andre\projetos\handtalks-z8\adc.c</pathname>
-<address>1097</address>
-<command></command>
-<preserve-type>0</preserve-type>
-</breakpoint>
 </breakpoints>
 
 <!-- ice event information -->

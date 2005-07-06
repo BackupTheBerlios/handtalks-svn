@@ -5,33 +5,31 @@
 
 #include <eZ8.h>
 
-///////////////////////////////////////////////////////
-// Initializes LED ports - Port A 
-//
+#include "main.h"
+#include "gatilho.h"
 
-void init_led_gpio(void)
+/* Initializes GPIO */
+void inicia_gpio (void)
 {
-  PAADDR 	= 0x02;        //Changed to alternate mode to configure PA2
-  PACTL 	&= 0xFB;		//as GPIO
+    // Port A initialization
+//    PAOUT = 0xF8;        // Start with LEDs on, PA[2:0]
 
-  PAADDR 	= 0x01;     // PA Data Dir =
-  PACTL 	&= 0xF8;   	// PA0-PA2 as Outputs
+    PAADDR = P_AFS1;
+    PACTL = 0xDA;        // Selects alternate functions:
 
-  PAOUT &= 0xF8;  	    // Turn on PA0-PA2  leds
+    PAADDR = P_AFS2;
+    PACTL = 0xDA;        // UART0 Rx/Tx
+
+    PAADDR = P_AF;
+    PACTL = 0x3A;        // Exposes alternate functions: UART0 Rx/Tx
+
+    PAADDR = P_DD;
+    PACTL = 0xFF;        // PA[7:0]-input
+
+    PAADDR = P_NUL;
+
+    inicia_gatilho();  // Initialize Test Button (Port C)
+	
 }
-
-///////////////////////////////////////////////////////
-// Initializes Test button port - Port PA2 
-//
-
-void init_test_button_gpio(void)
-{
-  PAADDR 	= 0x01;     // PA Data Dir 
-  PACTL 	|= 0x08;   	// PA3 as input
-}
-
-///////////////////////////////////////////////////////
-//  Turns off ALL LEDs
-//
 
 

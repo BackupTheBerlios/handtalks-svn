@@ -16,7 +16,7 @@
 #ifndef ADC_H
 #define ADC_H
  
-#define SENSORES		2
+#define SENSORES		3
 
 #define ADC_INT_EN			0x01				// Enable ADC interrupts
 

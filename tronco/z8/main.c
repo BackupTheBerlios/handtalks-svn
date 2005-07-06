@@ -29,13 +29,12 @@
 #include <sio.h> // non-standard I/O
 #include <string.h>
 #include "main.h"
-#include "timer.h"
 #include "gatilho.h"
 #include "uart.h"
 #include "adc.h"
 
 
-unsigned int actual_temp();
+void inicia_gpio(void);
 
 ///////////////////////////////////////////////////////
 // Global - Variable
@@ -64,18 +63,26 @@ void inicia_clock_sistema()
 
 main ()
 {
-	unsigned int sensor_anterior=0;
+	unsigned int sensor_anterior=0, i=0;
 
-	inicia_clock_sistema();	
 
    	DI();							// Disable Interrupts
+    inicia_gpio();
+	inicia_clock_sistema();	
 	inicia_uart0();
     inicia_adc();
-	inicia_gatilho();
    	EI();							// Enable Interrupts
 
 	while(1)
 	{
+//		printf(".");
+		i++;
+		if (i == 10000)
+		{
+			sensor = 1;
+			i = 0;
+		}
+
 		if (sensor)
 		{
 			if (sensor != sensor_anterior)
@@ -91,8 +98,8 @@ main ()
 
 		if (leitura_efetuada == YES)
 		{
-			leitura_efetuada == NO;
-			printf("%d,%d\n", ana[0], ana[1]);
+			leitura_efetuada = NO;
+			printf(" %d,%d,%d\n", ana[0], ana[1], ana[2]);
 		}
 	}
 } // main
