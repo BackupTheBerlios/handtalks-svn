@@ -43,15 +43,20 @@ def aplayer (name, card=0):
   while snd.isPlaying():
     time.sleep (.05)
 
-# ----------------------------------------------------------------------------------
-# Play any compressed audio file with adjustable pitch
-# http://pymedia.org/
-if len(sys.argv) < 2 or len(sys.argv) > 3:
-  print "Usage: aplayer <filename> [ sound_card_index ]"
-else:
-  i= 0
-  if len(sys.argv) > 2 :
-    i = int (sys.argv[2])
-  aplayer (sys.argv[1], i)
+
+def main():
+  # ----------------------------------------------------------------------------------
+  # Play any compressed audio file with adjustable pitch
+  # http://pymedia.org/
+  if len(sys.argv) < 2 or len(sys.argv) > 3:
+    print "Usage: aplayer <filename> [ sound_card_index ]"
+  else:
+    i= 0
+    if len(sys.argv) > 2 :
+      i = int (sys.argv[2])
+    aplayer (sys.argv[1], i)
+
+if __name__ == '__main__':
+  main()
 
 # vim:sw=2
