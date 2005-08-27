@@ -5,7 +5,7 @@ import wx
 
 import janela
 
-modules ={u'janela': [1, 'Main frame of Application', u'janela.py']}
+modules ={u'janela': [1, u'Janela Principal', u'janela.py']}
 
 class BoaApp(wx.App):
     def OnInit(self):
