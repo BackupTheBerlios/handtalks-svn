@@ -1,4 +1,15 @@
 #Boa:Frame:frJanela
+#-----------------------------------------------------------------------------
+# Name:        janela.py
+# Purpose:     
+#
+# Author:      Andre Pinto
+#
+# Created:     2005/08/28
+# RCS-ID:      $Id: janela.py $
+# Copyright:   (c) 2005
+# Licence:     GPL
+#-----------------------------------------------------------------------------
 
 import wx
 
@@ -63,5 +74,7 @@ class frJanela(wx.Frame):
         self.SetIcons(ib)        
 
     def OnSairButton(self, event):
+        # TODO: Confirmar saida
+
         self.Close()
 

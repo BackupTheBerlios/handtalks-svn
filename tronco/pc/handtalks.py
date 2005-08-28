@@ -1,5 +1,16 @@
 #!/usr/bin/env python
 #Boa:App:BoaApp
+#-----------------------------------------------------------------------------
+# Name:        handtalks.py
+# Purpose:     Projeto Hand Talks!
+#
+# Author:      Andre Pinto
+#
+# Created:     2005/08/28
+# SVN-ID:      $Id: handtalks.py $
+# Copyright:   (c) 2005
+# Licence:     GPL
+#-----------------------------------------------------------------------------
 
 import wx
 
