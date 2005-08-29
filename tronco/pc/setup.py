@@ -2,7 +2,8 @@
 from distutils.core import setup
 import py2exe
 
-setup(name = 'default',
+setup (
+    name = 'default',
     version = '0.1', 
     scripts = [], 
     windows = [
