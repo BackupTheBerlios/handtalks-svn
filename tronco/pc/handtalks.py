@@ -13,10 +13,10 @@
 #-----------------------------------------------------------------------------
 
 import wx
-
 import janela
 
-modules ={u'janela': [1, u'Janela Principal', u'janela.py']}
+modules ={u'janela': [1, u'Janela Principal', u'janela.py'],
+ u'tocador': [0, u'Tocador de audio', u'tocador.py']}
 
 class BoaApp(wx.App):
     def OnInit(self):

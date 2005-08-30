@@ -1,15 +1,17 @@
 
 from distutils.core import setup
 import py2exe
+import glob
 
 setup (
-    name = 'default',
+    name = 'HandTalks!',
+    description = 'Tradutor do alfabeto LIBRAS',
     version = '0.1', 
-    scripts = [], 
-    windows = [
-        {
-            "script": "handtalks.py",
-            "icon_resources": [(1, "handtalks.ico")]
-        }
-    ],
+    
+    windows = [{
+        "script": "handtalks.py",
+        "icon_resources": [(1, r"lib\handtalks.ico")]
+    }],
+    data_files = [ ("lib", glob.glob(r"lib\*")) ],
+    zipfile = r"lib\bytecodes.zip",
 )
