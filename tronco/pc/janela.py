@@ -82,7 +82,7 @@ class frJanela(wx.Frame):
 
     def OnBtTocarButton(self, event):
         self.stbEstado.SetStatusText(number=0, text=u'Reproduzindo audio...')
-        if not tocador.toca_tudo ("lib/" + self.stLetra.GetLabel()):
+        if not tocador.toca_tudo ("audio/" + self.stLetra.GetLabel()):
             dlg = wx.MessageDialog(self, "Falha na execucao!",
                                    'Erro',
                                    wx.OK | wx.ICON_EXCLAMATION

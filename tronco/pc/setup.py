@@ -12,6 +12,7 @@ setup (
         "script": "handtalks.py",
         "icon_resources": [(1, r"lib\handtalks.ico")]
     }],
-    data_files = [ ("lib", glob.glob(r"lib\*")) ],
-    zipfile = r"lib\bytecodes.zip",
+    data_files = [ ("lib", glob.glob(r"lib\*")),
+                   ("audio", glob.glob(r"audio\*"))   ],
+    zipfile = r"lib\handtalks.lib",
 )
