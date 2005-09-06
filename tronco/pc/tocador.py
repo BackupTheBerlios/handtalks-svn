@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: UTF-8 -*-
 
 import sys
 
@@ -64,7 +65,7 @@ def main():
         if len(sys.argv) > 2 :
             i = int (sys.argv[2])
         if not toca_tudo (sys.argv[1], i):
-            print "Arquivo nao encontrado!"
+            print "Arquivo não encontrado!"
 
 if __name__ == '__main__':
     main()

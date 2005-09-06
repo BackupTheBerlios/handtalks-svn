@@ -1,10 +1,11 @@
 #!/usr/bin/env python
+# -*- coding: UTF-8 -*-
 #Boa:App:BoaApp
 #-----------------------------------------------------------------------------
 # Name:        handtalks.py
 # Purpose:     Projeto Hand Talks!
 #
-# Author:      Andre Pinto
+# Author:      André Pinto
 #
 # Created:     2005/08/28
 # SVN-ID:      $Id: handtalks.py $
@@ -16,7 +17,7 @@ import wx
 import janela
 
 modules ={u'janela': [1, u'Janela Principal', u'janela.py'],
- u'tocador': [0, u'Tocador de audio', u'tocador.py']}
+ u'tocador': [0, u'Tocador de áudio', u'tocador.py']}
 
 class BoaApp(wx.App):
     def OnInit(self):
