@@ -12,7 +12,8 @@ class JanelaPrincipal(wx.Frame):
         # begin wxGlade: JanelaPrincipal.__init__
         kwds["style"] = wx.DEFAULT_FRAME_STYLE
         wx.Frame.__init__(self, *args, **kwds)
-        self.sizerSaida_staticbox = wx.StaticBox(self, -1, "Saída")
+        self.sizerSaida_staticbox = wx.StaticBox(self, -1, "SaÃ­da")
+        self.sizerHistorico_staticbox = wx.StaticBox(self, -1, "HistÃ³rico")
         self.sizerEntrada_staticbox = wx.StaticBox(self, -1, "Entrada")
         self.janela_statusbar = self.CreateStatusBar(1, 0)
         
@@ -23,16 +24,20 @@ class JanelaPrincipal(wx.Frame):
         self.janela_toolbar.AddSeparator()
         self.janela_toolbar.AddLabelTool(1, "Sair", wx.Bitmap("lib/CloseWindow.png", wx.BITMAP_TYPE_ANY), wx.NullBitmap, wx.ITEM_NORMAL, "Sair", "Fecha o Hand Talks!")
         # Tool Bar end
+        self.comando = wx.TextCtrl(self, -1, "")
+        self.enviar = wx.BitmapButton(self, -1, wx.Bitmap("/home/acdcp/projetos/handtalks-pc/lib/Cancel.png", wx.BITMAP_TYPE_ANY))
+        self.resposta = wx.TextCtrl(self, -1, "")
         self.caixaLetras = wx.Choice(self, -1, choices=[])
-        self.panel_4 = wx.Panel(self, -1)
         self.letraExibida = wx.StaticText(self, -1, "A", style=wx.ALIGN_CENTRE|wx.ST_NO_AUTORESIZE)
-        self.panel_5 = wx.Panel(self, -1)
+        self.historico = wx.TextCtrl(self, -1, "", style=wx.TE_MULTILINE)
 
         self.__set_properties()
         self.__do_layout()
 
         self.Bind(wx.EVT_TOOL, self.configuraSerial, id=2)
         self.Bind(wx.EVT_TOOL, self.fechaAplicacao, id=1)
+        self.Bind(wx.EVT_TEXT_ENTER, self.enviarComando, self.comando)
+        self.Bind(wx.EVT_BUTTON, self.enviarComando, self.enviar)
         self.Bind(wx.EVT_CHOICE, self.trocouLetra, self.caixaLetras)
         # end wxGlade
         self.Bind(wx.EVT_CLOSE, self.OnJanelaClose)
@@ -47,8 +52,13 @@ class JanelaPrincipal(wx.Frame):
         for i in range(len(janela_statusbar_fields)):
             self.janela_statusbar.SetStatusText(janela_statusbar_fields[i], i)
         self.janela_toolbar.Realize()
+        self.enviar.SetToolTipString("Enviar Comando e CR+LF")
+        self.enviar.SetSize(self.enviar.GetBestSize())
+        self.resposta.Enable(False)
+        self.caixaLetras.Enable(False)
         self.caixaLetras.SetSelection(0)
         self.letraExibida.SetFont(wx.Font(200, wx.DEFAULT, wx.NORMAL, wx.NORMAL, 0, ""))
+        self.historico.Enable(False)
         # end wxGlade
 
         # Popula a caixa de letras
@@ -62,19 +72,27 @@ class JanelaPrincipal(wx.Frame):
 
     def __do_layout(self):
         # begin wxGlade: JanelaPrincipal.__do_layout
-        sizerGeral = wx.BoxSizer(wx.VERTICAL)
+        sizerJanela = wx.BoxSizer(wx.HORIZONTAL)
+        sizerHistorico = wx.StaticBoxSizer(self.sizerHistorico_staticbox, wx.VERTICAL)
+        sizerPrincipal = wx.BoxSizer(wx.VERTICAL)
         sizerSaida = wx.StaticBoxSizer(self.sizerSaida_staticbox, wx.VERTICAL)
         sizerEntrada = wx.StaticBoxSizer(self.sizerEntrada_staticbox, wx.HORIZONTAL)
-        sizerEntrada.Add(self.caixaLetras, 1, wx.ALL|wx.FIXED_MINSIZE, 3)
-        sizerGeral.Add(sizerEntrada, 0, wx.ALL|wx.EXPAND, 3)
-        sizerSaida.Add(self.panel_4, 1, wx.EXPAND, 0)
+        sizerEntrada.Add(self.comando, 0, wx.ALL, 3)
+        sizerEntrada.Add(self.enviar, 0, wx.ALL, 3)
+        sizerEntrada.Add(self.resposta, 1, wx.ALL, 3)
+        sizerEntrada.Add(self.caixaLetras, 0, wx.ALL|wx.FIXED_MINSIZE, 3)
+        sizerPrincipal.Add(sizerEntrada, 0, wx.ALL|wx.EXPAND, 3)
+        sizerSaida.Add((1, 1), 1, wx.ADJUST_MINSIZE, 0)
         sizerSaida.Add(self.letraExibida, 0, wx.ALL|wx.EXPAND|wx.ADJUST_MINSIZE, 3)
-        sizerSaida.Add(self.panel_5, 1, wx.EXPAND, 0)
-        sizerGeral.Add(sizerSaida, 1, wx.ALL|wx.EXPAND|wx.ADJUST_MINSIZE, 3)
+        sizerSaida.Add((1, 1), 1, wx.ADJUST_MINSIZE, 0)
+        sizerPrincipal.Add(sizerSaida, 1, wx.ALL|wx.EXPAND|wx.ADJUST_MINSIZE, 3)
+        sizerJanela.Add(sizerPrincipal, 1, wx.EXPAND, 0)
+        sizerHistorico.Add(self.historico, 1, wx.ALL|wx.EXPAND|wx.ADJUST_MINSIZE, 3)
+        sizerJanela.Add(sizerHistorico, 0, wx.ALL|wx.EXPAND|wx.ADJUST_MINSIZE, 3)
         self.SetAutoLayout(True)
-        self.SetSizer(sizerGeral)
-        sizerGeral.Fit(self)
-        sizerGeral.SetSizeHints(self)
+        self.SetSizer(sizerJanela)
+        sizerJanela.Fit(self)
+        sizerJanela.SetSizeHints(self)
         self.Layout()
         self.Centre()
         # end wxGlade
@@ -98,10 +116,10 @@ class JanelaPrincipal(wx.Frame):
             self.Update()
         
         if tocador.toca_tudo ("audio/" + letra):
-            self.janela_statusbar.SetStatusText(number=0, text=u'')
+            self.janela_statusbar.SetStatusText(number=0, text='')
         else:
             self.janela_statusbar.SetStatusText(number=0, text=u'Falha na execução!')
-#            dlg = wx.MessageDialog(self, u"Falha na execução!",
+#            dlg = wx.MessageDialog(self, "Falha na execução!",
 #                                   'Erro',
 #                                   wx.OK | wx.ICON_EXCLAMATION
 #                                   )
@@ -119,6 +137,12 @@ class JanelaPrincipal(wx.Frame):
             if veta:
                 return
         self.Destroy()
+
+    def enviarComando(self, event): # wxGlade: JanelaPrincipal.<event_handler>
+        event.Skip()
+
+    def enviarComando(self, event): # wxGlade: JanelaPrincipal.<event_handler>
+        event.Skip()
 
 # end of class JanelaPrincipal
 
