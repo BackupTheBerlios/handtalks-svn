@@ -12,7 +12,7 @@ ID_SAIR = wx.NewId()
 ID_CONFIG = wx.NewId()
 ID_COMUNIC = wx.NewId()
 ID_SOBRE = wx.NewId()
-	
+
 class JanelaPrincipal(wx.Frame):
     def __init__(self, *args, **kwds):
         # begin wxGlade: JanelaPrincipal.__init__
@@ -33,20 +33,10 @@ class JanelaPrincipal(wx.Frame):
         wxglade_tmp_menu = wx.Menu()
         wxglade_tmp_menu.Append(ID_SOBRE, "So&bre...", "", wx.ITEM_NORMAL)
         wxglade_tmp_menu.AppendSeparator()
-        wxglade_tmp_menu.Append(ID_SAIR, "&Sair", "", wx.ITEM_NORMAL)
+        wxglade_tmp_menu.Append(ID_SAIR, "Sair", "", wx.ITEM_NORMAL)
         self.janela_menubar.Append(wxglade_tmp_menu, "&Geral")
         # Menu Bar end
         self.janela_statusbar = self.CreateStatusBar(7, wx.ST_SIZEGRIP)
-        
-        # Tool Bar
-        self.janela_toolbar = wx.ToolBar(self, -1, style=wx.TB_HORIZONTAL|wx.TB_FLAT|wx.TB_DOCKABLE)
-        self.SetToolBar(self.janela_toolbar)
-        self.janela_toolbar.AddLabelTool(ID_CONFIG, "Configurar...", wx.Bitmap("lib/Config.png", wx.BITMAP_TYPE_ANY), wx.NullBitmap, wx.ITEM_NORMAL, "Configurar...", "Ajusta detalhes da porta serial")
-        self.janela_toolbar.AddLabelTool(ID_COMUNIC, "Comunicar", wx.Bitmap("lib/Parado.png", wx.BITMAP_TYPE_ANY), wx.NullBitmap, wx.ITEM_CHECK, "Comunicar", u"Inicia/Interrompe comunicação")
-        self.janela_toolbar.AddSeparator()
-        self.janela_toolbar.AddLabelTool(ID_SOBRE, "Sobre...", wx.Bitmap("lib/Info.png", wx.BITMAP_TYPE_ANY), wx.NullBitmap, wx.ITEM_NORMAL, "Sobre...", u"Informações sobre o HandTalks!")
-        self.janela_toolbar.AddLabelTool(ID_SAIR, "Sair", wx.Bitmap("lib/Fechar.png", wx.BITMAP_TYPE_ANY), wx.NullBitmap, wx.ITEM_NORMAL, "Sair", "Fecha o HandTalks!")
-        # Tool Bar end
         self.comando = wx.TextCtrl(self, -1, "")
         self.enviar = wx.BitmapButton(self, -1, wx.Bitmap("lib/Enviar.png", wx.BITMAP_TYPE_ANY))
         self.resposta = wx.TextCtrl(self, -1, "", style=wx.TE_READONLY)
@@ -61,10 +51,6 @@ class JanelaPrincipal(wx.Frame):
         self.Bind(wx.EVT_MENU, self.alternaComunicacao, id=ID_COMUNIC)
         self.Bind(wx.EVT_MENU, self.sobreHandtalks, id=ID_SOBRE)
         self.Bind(wx.EVT_MENU, self.sair, id=ID_SAIR)
-        self.Bind(wx.EVT_TOOL, self.configuraSerial, id=ID_CONFIG)
-        self.Bind(wx.EVT_TOOL, self.alternaComunicacao, id=ID_COMUNIC)
-        self.Bind(wx.EVT_TOOL, self.sobreHandtalks, id=ID_SOBRE)
-        self.Bind(wx.EVT_TOOL, self.sair, id=ID_SAIR)
         self.Bind(wx.EVT_TEXT_ENTER, self.enviarComando, self.comando)
         self.Bind(wx.EVT_BUTTON, self.enviarComando, self.enviar)
         self.Bind(wx.EVT_CHOICE, self.trocouLetra, self.caixaLetras)
@@ -73,11 +59,22 @@ class JanelaPrincipal(wx.Frame):
         # Mais eventos
         self.Bind(wx.EVT_CLOSE, self.fechaAplicacao)
 
+        # Toolbar na unha (pra pegar ícones prontos)
+        self.janela_toolbar = wx.ToolBar(self, -1, style=wx.TB_FLAT|wx.TB_DOCKABLE)
+        tamanho = (32,32)
+        self.janela_toolbar.SetToolBitmapSize (tamanho)
+        self.SetToolBar(self.janela_toolbar)
+        self.janela_toolbar.AddLabelTool(ID_CONFIG, "Configurar...", wx.ArtProvider.GetBitmap (wx.ART_EXECUTABLE_FILE, wx.ART_TOOLBAR, tamanho), wx.NullBitmap, wx.ITEM_NORMAL, "Configurar...", "Ajusta detalhes da porta serial")
+        self.janela_toolbar.AddLabelTool(ID_COMUNIC, "Comunicar", wx.ArtProvider.GetBitmap (wx.ART_TICK_MARK, wx.ART_TOOLBAR, tamanho), wx.NullBitmap, wx.ITEM_CHECK, "Comunicar", u"Inicia/Interrompe comunicação")
+        self.janela_toolbar.AddSeparator()
+        self.janela_toolbar.AddLabelTool(ID_SOBRE, "Sobre...", wx.ArtProvider.GetBitmap (wx.ART_INFORMATION, wx.ART_TOOLBAR, tamanho), wx.NullBitmap, wx.ITEM_NORMAL, "Sobre...", u"Informações sobre o HandTalks!")
+        self.janela_toolbar.AddLabelTool(ID_SAIR, "Sair", wx.ArtProvider.GetBitmap (wx.ART_QUIT, wx.ART_TOOLBAR, tamanho), wx.NullBitmap, wx.ITEM_NORMAL, "Sair", "Fechar o HandTalks!")
+
         # Associa um Ícone
         ib = wx.IconBundle()
         ib.AddIconFromFile("lib/handtalks.ico",wx.BITMAP_TYPE_ANY)
         self.SetIcons(ib)        
-        
+
 
     def __set_properties(self):
         # begin wxGlade: JanelaPrincipal.__set_properties
@@ -88,8 +85,6 @@ class JanelaPrincipal(wx.Frame):
         janela_statusbar_fields = ["", "Porta 0", "9600", "8", "N", "1", ""]
         for i in range(len(janela_statusbar_fields)):
             self.janela_statusbar.SetStatusText(janela_statusbar_fields[i], i)
-        self.janela_toolbar.SetToolBitmapSize((16, 16))
-        self.janela_toolbar.Realize()
         self.comando.SetToolTipString(u"Digite um comando para enviar à luva")
         self.enviar.SetBackgroundColour(wx.SystemSettings_GetColour(wx.SYS_COLOUR_3DFACE))
         self.enviar.SetToolTipString("Enviar Comando")
@@ -151,7 +146,7 @@ class JanelaPrincipal(wx.Frame):
         
         self.letraExibida.SetLabel (letra)
         self.janela_statusbar.SetStatusText(number=0, text=u'Reproduzindo Áudio...')
-	
+
         if not self.IsMaximized():
             self.GetSizer().SetSizeHints(self)
             self.Refresh()

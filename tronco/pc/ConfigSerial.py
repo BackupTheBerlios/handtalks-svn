@@ -16,8 +16,8 @@ class ConfigSerial(wx.Dialog):
         self.bits = wx.SpinCtrl(self, -1, "8", min=7, max=9, style=wx.SP_ARROW_KEYS|wx.TE_AUTO_URL)
         self.paridade = wx.Choice(self, -1, choices=["Nenhuma", "Par", u"Ímpar"])
         self.stopBits = wx.SpinCtrl(self, -1, "1", min=0, max=2, style=wx.SP_ARROW_KEYS|wx.TE_AUTO_URL)
-        self.btCancelar = wx.Button(self, wx.ID_CANCEL, "Cancelar")
-        self.btOk = wx.Button(self, wx.ID_OK, "OK")
+        self.btCancelar = wx.Button(self, wx.ID_CANCEL, "")
+        self.btOk = wx.Button(self, wx.ID_OK, "")
 
         self.__set_properties()
         self.__do_layout()
