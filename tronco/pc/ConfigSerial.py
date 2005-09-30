@@ -9,15 +9,19 @@ import serial
 
 class ConfigSerial(wx.Dialog):
     def __init__(self, *args, **kwds):
+        # Configurações da serial
+        self.serial = kwds['serial']
+        del kwds['serial']
+
         # begin wxGlade: ConfigSerial.__init__
         kwds["style"] = wx.DEFAULT_DIALOG_STYLE
         wx.Dialog.__init__(self, *args, **kwds)
         self.sizerFluxo_staticbox = wx.StaticBox(self, -1, "Controle de Fluxo")
         self.porta = wx.Choice(self, -1, choices=[])
         self.velocidade = wx.Choice(self, -1, choices=[])
-        self.dados = wx.SpinCtrl(self, -1, "8", min=5, max=8, style=wx.SP_ARROW_KEYS|wx.TE_AUTO_URL)
-        self.paridade = wx.Choice(self, -1, choices=["Nenhuma", u"Ímpar", "Par"])
-        self.parada = wx.SpinCtrl(self, -1, "1", min=0, max=2, style=wx.SP_ARROW_KEYS|wx.TE_AUTO_URL)
+        self.dados = wx.Choice(self, -1, choices=[])
+        self.paridade = wx.Choice(self, -1, choices=[])
+        self.parada = wx.Choice(self, -1, choices=[])
         self.cfHardware = wx.CheckBox(self, -1, "RTS/CTS")
         self.cfSoftware = wx.CheckBox(self, -1, "Xon/Xoff")
         self.btCancelar = wx.Button(self, wx.ID_CANCEL, "")
@@ -25,10 +29,9 @@ class ConfigSerial(wx.Dialog):
 
         self.__set_properties()
         self.__do_layout()
-        # end wxGlade
 
-        # Configurações da serial
-        self.serial = kwds['serial']
+        self.Bind(wx.EVT_BUTTON, self.pressionouOK, id=wx.ID_OK)
+        # end wxGlade
 
         # Porta
         self.porta.Clear()
@@ -43,27 +46,41 @@ class ConfigSerial(wx.Dialog):
             if self.serial.baudrate == baudrate:
                 self.velocidade.SetSelection(n)
 
-        # Bits de Dados
-        self.dados.SetValue (self.serial.bytesize);
+        # Dados
+        self.dados.Clear()
+        for n, dados in enumerate(self.serial.BYTESIZES):
+            self.dados.Append(str(dados))
+            if self.serial.bytesize == dados:
+                self.dados.SetSelection(n)
 
         # Paridade
-        self.paridade 
+        self.paridade.Clear()
+        NOMES = {'N': u'Nenhuma', 'O': u'Ímpar', 'E': u'Par'}
+        for n,paridade in enumerate (self.serial.PARITIES):
+            self.paridade.Append(NOMES[paridade])
+            if self.serial.parity == paridade:
+                self.paridade.SetSelection(n)
 
-        # Bits de Parada
-        self.parada.SetValue (self.serial.stopbits);
+        # Parada
+        self.parada.Clear()
+        for n, parada in enumerate(self.serial.STOPBITS):
+            self.parada.Append(str(parada))
+            if self.serial.stopbits == parada:
+                self.parada.SetSelection(n)
 
         # Controle de Fluxo
         self.cfHardware.SetValue (self.serial.rtscts);
         self.cfSoftware.SetValue (self.serial.xonxoff);
 
-        
 
     def __set_properties(self):
         # begin wxGlade: ConfigSerial.__set_properties
         self.SetTitle(u"Configuração da Serial")
         self.porta.SetSelection(0)
         self.velocidade.SetSelection(0)
+        self.dados.SetSelection(0)
         self.paridade.SetSelection(0)
+        self.parada.SetSelection(0)
         self.btOk.SetDefault()
         # end wxGlade
 
@@ -103,6 +120,16 @@ class ConfigSerial(wx.Dialog):
         sizerJanela.SetSizeHints(self)
         self.Layout()
         # end wxGlade
+
+    def pressionouOK(self, event): # wxGlade: ConfigSerial.<event_handler>
+        self.serial.port     = self.porta.GetSelection()
+        self.serial.baudrate = self.serial.BAUDRATES[self.velocidade.GetSelection()]
+        self.serial.bytesize = self.serial.BYTESIZES[self.dados.GetSelection()]
+        self.serial.stopbits = self.serial.STOPBITS[self.parada.GetSelection()]
+        self.serial.parity   = self.serial.PARITIES[self.paridade.GetSelection()]
+        self.serial.rtscts   = self.cfHardware.GetValue()
+        self.serial.xonxoff  = self.cfSoftware.GetValue()
+        self.EndModal(event.GetId())
 
 # end of class ConfigSerial
 
