@@ -267,6 +267,34 @@ class JanelaPrincipal(wx.Frame):
 
 
     def alternaComunicacao(self, event): # wxGlade: JanelaPrincipal.<event_handler>
+
+"""
+        max = 80
+
+        dlg = wx.ProgressDialog("Aguarde...",
+                               "Abrindo/Fechando a porta serial.",
+                               maximum = max,
+                               parent=self,
+                               style = wx.PD_APP_MODAL
+                                | wx.PD_ELAPSED_TIME
+                                #| wx.PD_ESTIMATED_TIME
+                                | wx.PD_REMAINING_TIME
+                                )
+
+        keepGoing = True
+        count = 0
+
+        while keepGoing and count < max:
+            count += 1
+            wx.MilliSleep(250)
+
+            if count >= max / 2:
+                keepGoing = dlg.Update(count, "Half-time!")
+            else:
+                keepGoing = dlg.Update(count)
+
+        dlg.Destroy()
+"""
         comunica = not self.serial.isOpen()
         self.reportaErro()
         
