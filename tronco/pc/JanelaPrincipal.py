@@ -292,6 +292,7 @@ class JanelaPrincipal(wx.Frame):
     def sobreHandtalks(self, event): # wxGlade: JanelaPrincipal.<event_handler>
         dlg = wx.MessageDialog(self,
 u"""HandTalks!
+Versão 0.2
 
 Tradutor do alfabeto LIBRAS.
 
