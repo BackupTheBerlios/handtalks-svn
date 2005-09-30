@@ -3,6 +3,7 @@
 
 import wx
 import tocador
+import serial
 from ConfigSerial import ConfigSerial
 
 # begin wxGlade: dependencies
@@ -73,7 +74,18 @@ class JanelaPrincipal(wx.Frame):
         # Associa um Ícone
         ib = wx.IconBundle()
         ib.AddIconFromFile("lib/handtalks.ico",wx.BITMAP_TYPE_ANY)
-        self.SetIcons(ib)        
+        self.SetIcons(ib)
+
+        # Valores padrões da serial
+        self.serial = serial.Serial()
+        self.serial.port = 0;
+        self.serial.baudrate = 9600;
+        self.serial.bytesize = 8;
+        self.serial.parity = serial.PARITY_NONE;
+        self.serial.stopbits = 1;
+        self.serial.timeout = 2;
+        self.serial.rtscts = False;
+        self.serial.xonxoff = False;
 
 
     def __set_properties(self):
@@ -129,13 +141,10 @@ class JanelaPrincipal(wx.Frame):
 
 
     def configuraSerial(self, event): # wxGlade: JanelaPrincipal.<event_handler>
-        dlg = ConfigSerial (self)
-        # TODO: preencher diálogo com os dados de configuração da serial
+        dlg = ConfigSerial (self, serial=self.serial)
         
         if (dlg.ShowModal() == wx.ID_OK):
-            # TODO: ler os dados de configuração da serial
-            # TODO: Atualizar statusbar
-            print "Sim!"
+            print "Novo serial:", self.serial
 
         dlg.Destroy()
 
