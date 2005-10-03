@@ -267,8 +267,7 @@ class JanelaPrincipal(wx.Frame):
 
 
     def alternaComunicacao(self, event): # wxGlade: JanelaPrincipal.<event_handler>
-
-"""
+        """
         max = 80
 
         dlg = wx.ProgressDialog("Aguarde...",
@@ -293,8 +292,8 @@ class JanelaPrincipal(wx.Frame):
             else:
                 keepGoing = dlg.Update(count)
 
-        dlg.Destroy()
-"""
+        dlg.Destroy()"""
+        
         comunica = not self.serial.isOpen()
         self.reportaErro()
         
