@@ -12,10 +12,12 @@ setup (
     
     windows = [{
         "script": "handtalks.pyw",
-        "icon_resources": [(1, r"lib\handtalks.ico")]
+        "icon_resources": [(1, r"imagem\handtalks.ico")]
     }],
-    data_files = [ ("lib", glob.glob(r"lib\*")),
+    data_files = [ ("imagem", glob.glob(r"imagem\*")),
                    ("audio", glob.glob(r"audio\*"))   ],
-    zipfile = r"lib\handtalks_lib.zip",
+#    zipfile = r"handtalks_lib.zip",
+#    zipfile = r"lib\handtalks_lib.zip",
+    zipfile = None,
     options = {'py2exe': {'excludes': ['javax.comm', 'TERMIOS', 'FCNTL']}},
 )
