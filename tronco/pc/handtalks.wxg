@@ -10,6 +10,7 @@
         <statusbar>1</statusbar>
         <background>wxSYS_COLOUR_3DFACE</background>
         <toolbar>1</toolbar>
+        <size>271, 228d</size>
         <object class="wxMenuBar" name="janela_menubar" base="EditMenuBar">
             <menus>
                 <menu name="" label="&amp;Usuários">
@@ -40,8 +41,8 @@
                         <name>---</name>
                     </item>
                     <item>
-                        <label>Associar &amp;Letras...</label>
-                        <id>ID_ASSOCIAR_LETRAS</id>
+                        <label>Ajus&amp;tar...</label>
+                        <id>ID_AJUSTAR</id>
                     </item>
                 </menu>
                 <menu name="" label="&amp;Comunicação">
@@ -88,12 +89,12 @@
         <object class="wxStatusBar" name="janela_statusbar" base="EditStatusBar">
             <fields>
                 <field width="-1"></field>
+                <field width="80"></field>
                 <field width="60"></field>
-                <field width="60"></field>
                 <field width="20"></field>
                 <field width="20"></field>
                 <field width="20"></field>
-                <field width="120"></field>
+                <field width="140"></field>
             </fields>
             <style>wxST_SIZEGRIP</style>
         </object>
@@ -129,10 +130,10 @@
                     <bitmap2>---</bitmap2>
                 </tool>
                 <tool>
-                    <id>ID_ASSOCIA_LETRAS</id>
-                    <label>Associar letras...</label>
+                    <id>ID_AJUSTAR</id>
+                    <label>Ajustar...</label>
                     <type>0</type>
-                    <short_help>Associar letras...</short_help>
+                    <short_help>Ajustar...</short_help>
                     <long_help>Faz o ajuste das letras com a mão do usuário</long_help>
                     <bitmap1>imagem/Usuario.png</bitmap1>
                     <bitmap2></bitmap2>
@@ -200,7 +201,7 @@
                 <border>3</border>
                 <option>1</option>
                 <object class="wxSplitterWindow" name="divisor" base="EditSplitterWindow">
-                    <style>wxSP_NOBORDER</style>
+                    <style>wxSP_PERMIT_UNSPLIT</style>
                     <orientation>wxSPLIT_VERTICAL</orientation>
                     <window_2>ladoDireito</window_2>
                     <window_1>ladoEsquerdo</window_1>
