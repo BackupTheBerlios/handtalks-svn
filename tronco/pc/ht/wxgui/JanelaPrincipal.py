@@ -36,15 +36,23 @@ ID_CONFIG = wx.NewId()
 ID_COMUNIC = wx.NewId()
 ID_SOBRE = wx.NewId()
 
+ID_NOVO = wx.NewId()
+ID_ABRIR = wx.NewId()
+ID_GRAVAR = wx.NewId()
+ID_GRAVAR_COMO = wx.NewId()
+ID_ASSOCIAR_LETRAS = wx.NewId()
+
 
 TIMEOUT_SERIAL = 2 # segundos
 
+"""
 # Confere se está na pasta wxgui
 import sys,os
 caminho=os.path.abspath (os.path.dirname (sys.argv[0]))
 if not caminho.endswith ("wxgui"):
     caminho = os.path.join (caminho, "ht", "wxgui")
 os.chdir (caminho)
+"""
 
 class JanelaPrincipal(wx.Frame):
     def __init__(self, *args, **kwds):
@@ -78,6 +86,15 @@ class JanelaPrincipal(wx.Frame):
         self.janela_menubar = wx.MenuBar()
         self.SetMenuBar(self.janela_menubar)
         wxglade_tmp_menu = wx.Menu()
+        wxglade_tmp_menu.Append(ID_NOVO, "&Novo", "", wx.ITEM_NORMAL)
+        wxglade_tmp_menu.Append(ID_ABRIR, "&Abrir...", "", wx.ITEM_NORMAL)
+        wxglade_tmp_menu.AppendSeparator()
+        wxglade_tmp_menu.Append(ID_GRAVAR, "&Gravar", "", wx.ITEM_NORMAL)
+        wxglade_tmp_menu.Append(ID_GRAVAR_COMO, "Gravar &Como...", "", wx.ITEM_NORMAL)
+        wxglade_tmp_menu.AppendSeparator()
+        wxglade_tmp_menu.Append(ID_ASSOCIAR_LETRAS, "Associar &Letras...", "", wx.ITEM_NORMAL)
+        self.janela_menubar.Append(wxglade_tmp_menu, u"&Usuários")
+        wxglade_tmp_menu = wx.Menu()
         wxglade_tmp_menu.Append(ID_CONFIG, "Confi&gurar...", "Ajusta detalhes da porta serial", wx.ITEM_NORMAL)
         wxglade_tmp_menu.AppendSeparator()
         wxglade_tmp_menu.Append(ID_COMUNIC, "&Comunicar", u"Inicia/Interrompe comunicação", wx.ITEM_CHECK)
@@ -93,14 +110,17 @@ class JanelaPrincipal(wx.Frame):
         # Tool Bar
         self.janela_toolbar = wx.ToolBar(self, -1, style=wx.TB_HORIZONTAL|wx.TB_FLAT|wx.TB_DOCKABLE)
         self.SetToolBar(self.janela_toolbar)
+        self.janela_toolbar.AddLabelTool(ID_ABRIR, u"Abrir usuário...", wx.Bitmap("imagem/Abrir.png", wx.BITMAP_TYPE_ANY), wx.NullBitmap, wx.ITEM_NORMAL, u"Abrir usuário...", u"Carrega os ajustes da luva de um usuário")
+        self.janela_toolbar.AddLabelTool(ID_GRAVAR, u"Gravar usuário...", wx.Bitmap("imagem/Gravar.png", wx.BITMAP_TYPE_ANY), wx.NullBitmap, wx.ITEM_NORMAL, u"Gravar usuário...", u"Grava os ajustes da luva de um usuário")
+        self.janela_toolbar.AddSeparator()
+        self.janela_toolbar.AddLabelTool(ID_ASSOCIAR_LETRAS, "Associar letras...", wx.Bitmap("imagem/Usuario.png", wx.BITMAP_TYPE_ANY), wx.NullBitmap, wx.ITEM_NORMAL, "Associar letras...", u"Faz o ajuste das letras com a mão do usuário")
+        self.janela_toolbar.AddSeparator()
         self.janela_toolbar.AddLabelTool(ID_CONFIG, "Configurar...", wx.Bitmap("imagem/Config.png", wx.BITMAP_TYPE_ANY), wx.NullBitmap, wx.ITEM_NORMAL, "Configurar...", "Ajusta detalhes da porta serial")
         self.janela_toolbar.AddLabelTool(ID_COMUNIC, "Comunicar", wx.Bitmap("imagem/Parado.png", wx.BITMAP_TYPE_ANY), wx.NullBitmap, wx.ITEM_CHECK, "Comunicar", u"Inicia/Interrompe comunicação")
         self.janela_toolbar.AddSeparator()
         self.janela_toolbar.AddLabelTool(ID_SOBRE, "Sobre...", wx.Bitmap("imagem/Info.png", wx.BITMAP_TYPE_ANY), wx.NullBitmap, wx.ITEM_NORMAL, "Sobre...", u"Informações sobre o HandTalks!")
         self.janela_toolbar.AddLabelTool(ID_SAIR, "Sair", wx.Bitmap("imagem/Fechar.png", wx.BITMAP_TYPE_ANY), wx.NullBitmap, wx.ITEM_NORMAL, "Sair", "Fecha o HandTalks!")
         # Tool Bar end
-        self.comando = wx.TextCtrl(self.ladoEsquerdo, -1, "")
-        self.enviar = wx.BitmapButton(self.ladoEsquerdo, -1, wx.Bitmap("imagem/Enviar.png", wx.BITMAP_TYPE_ANY))
         self.resposta = wx.TextCtrl(self.ladoEsquerdo, -1, "", style=wx.TE_READONLY)
         self.caixaLetras = wx.Choice(self.ladoEsquerdo, -1, choices=[])
         self.letraExibida = wx.StaticText(self.ladoEsquerdo, -1, "A", style=wx.ALIGN_CENTRE|wx.ST_NO_AUTORESIZE)
@@ -113,8 +133,6 @@ class JanelaPrincipal(wx.Frame):
         self.Bind(wx.EVT_MENU, self.alternaComunicacao, id=ID_COMUNIC)
         self.Bind(wx.EVT_MENU, self.sobreHandtalks, id=ID_SOBRE)
         self.Bind(wx.EVT_MENU, self.sair, id=ID_SAIR)
-        self.Bind(wx.EVT_TEXT_ENTER, self.enviarComando, self.comando)
-        self.Bind(wx.EVT_BUTTON, self.enviarComando, self.enviar)
         self.Bind(wx.EVT_CHOICE, self.trocouLetra, self.caixaLetras)
         # end wxGlade
 
@@ -141,11 +159,6 @@ class JanelaPrincipal(wx.Frame):
             self.janela_statusbar.SetStatusText(janela_statusbar_fields[i], i)
         self.janela_toolbar.SetToolBitmapSize((16, 16))
         self.janela_toolbar.Realize()
-        self.comando.SetToolTipString(u"Digite um comando para enviar à luva")
-        self.enviar.SetBackgroundColour(wx.SystemSettings_GetColour(wx.SYS_COLOUR_3DFACE))
-        self.enviar.SetToolTipString("Enviar Comando")
-        self.enviar.Enable(False)
-        self.enviar.SetSize(self.enviar.GetBestSize())
         self.resposta.SetToolTipString("Resposta da luva")
         self.resposta.Enable(False)
         self.caixaLetras.SetMinSize((50, 21))
@@ -174,8 +187,6 @@ class JanelaPrincipal(wx.Frame):
         sizerPrincipal = wx.BoxSizer(wx.VERTICAL)
         sizerSaida = wx.StaticBoxSizer(self.sizerSaida_staticbox, wx.VERTICAL)
         sizerEntrada = wx.StaticBoxSizer(self.sizerEntrada_staticbox, wx.HORIZONTAL)
-        sizerEntrada.Add(self.comando, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 3)
-        sizerEntrada.Add(self.enviar, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 3)
         sizerEntrada.Add(self.resposta, 1, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 3)
         sizerEntrada.Add(self.caixaLetras, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL|wx.FIXED_MINSIZE, 3)
         sizerPrincipal.Add(sizerEntrada, 0, wx.ALL|wx.EXPAND, 3)
