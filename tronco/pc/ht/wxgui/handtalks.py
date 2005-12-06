@@ -5,6 +5,7 @@
 import wx
 from JanelaPrincipal import JanelaPrincipal
 
+
 class HandTalksApp(wx.App):
     def OnInit(self):
         wx.InitAllImageHandlers()

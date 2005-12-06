@@ -39,8 +39,16 @@ ID_SOBRE = wx.NewId()
 
 TIMEOUT_SERIAL = 2 # segundos
 
+# Confere se está na pasta wxgui
+import sys,os
+caminho=os.path.abspath (os.path.dirname (sys.argv[0]))
+if not caminho.endswith ("wxgui"):
+    caminho = os.path.join (caminho, "ht", "wxgui")
+os.chdir (caminho)
+
 class JanelaPrincipal(wx.Frame):
     def __init__(self, *args, **kwds):
+
         # Valores padrões da serial
         self.serial = serial.Serial()
         self.serial.port = 0;
