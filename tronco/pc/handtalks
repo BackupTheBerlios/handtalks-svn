@@ -1,0 +1,5 @@
+#!/bin/sh
+HTDIR=.
+
+cd $HTDIR
+python handtalks.pyw
