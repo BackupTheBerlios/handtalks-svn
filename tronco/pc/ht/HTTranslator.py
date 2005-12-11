@@ -7,17 +7,18 @@ class HTTranslator (object):
     O sinal corresponde a duas tuplas, uma com os valores dos sensores
     AD de cada dedo, e outra com os valores booleanos dos contatos.
 
-    finger = (polegar, indicador, médio, anelar, mínimo)
+    fingers = (polegar, indicador, médio, anelar, mínimo)
     contacts = (pol_ind_frente, pol_ind_costas,
                 pol_med_ponta, pol_med_base,
                 ind-med)
     """
 
     # Constantes da Lógica Fuzzy
-    STRAINED, RELAXED, CONTRACTED = range(3)
+    INPUT_VARIABLES = 3
+    CONTRACTED, RELAXED, STRAINED = range(INPUT_VARIABLES)
 
     # Mapeamento das letras
-    MAPEAMENTO = {
+    MAPPING = {
             'A': {'fingers': (STRAINED, CONTRACTED, CONTRACTED, CONTRACTED, CONTRACTED),
                   'contacts': (True, False, False, False, True)},
             'B': {'fingers': (CONTRACTED, STRAINED, STRAINED, STRAINED, STRAINED),
@@ -82,7 +83,8 @@ class HTTranslator (object):
                   'contacts': (False, False, False, False, True)},
             '\n': {'fingers': (STRAINED, STRAINED, STRAINED, STRAINED, STRAINED),
                   'contacts': (False, False, False, False, True)}
-            } # MAPEAMENTO 
+    } # MAPPING 
+
 
     def __init__ (self):
         """ Método de inicialização dos atributos
@@ -98,60 +100,124 @@ class HTTranslator (object):
         self.contacts = None
 
         # Saída
-        self._result = None
+        self.__result = None
         
     # __init__()
 
 
     def getResult (self):
-        return self._result
+        """ Retorna o resultado (letra) da última tradução efetuada.
+        """
+        return self.__result
 
-    result = property (getResult, None, None, "Resultado (letra) da tradução")
+    result = property (getResult, None, None, "Resultado (letra) da última tradução")
 
 
-    def adjust (strained=None, relaxed=None, contracted=None):
+    def adjust (self, strained=None, relaxed=None, contracted=None):
         """ Ajusta os patamares da lógica fuzzy.
         Cada parâmetro é uma tupla com cinco valores, um para cada dedo
         """
+
+        # TODO: Verificar consistência dos valores
         if strained is not None:
-            self.strained = strained
+            self.strained = tuple ([ float(x) for x in strained ])
         if relaxed is not None:
-            self.relaxed = relaxed
+            self.relaxed = tuple ([ float(x) for x in relaxed ])
         if contracted is not None:
-            self.contracted = folded
+            self.contracted = tuple ([ float(x) for x in contracted ])
 
     # adjust()
+    
 
-    def translate (fingers=None, contacts=None):
+    def translate (self, fingers=None, contacts=None):
+        """ Método que efetivamente faz a tradução do sinal de entrada numa
+        letra, utilizando lógica fuzzy.
+        """
+        
         if fingers is not None:
             self.fingers = fingers 
         if contacts is not None:
             self.contacts = contacts 
 
-        # Calcula o peso de cada opção
-        #relaxed_weight
-        
+        # Calcula o peso de cada variável de entrada (contraído etc.)
+        input_weight = [ [0.0 for finger in range(5)]
+                         for input in range (self.INPUT_VARIABLES) ]
+        for finger in range(5):
+            if self.fingers[finger] <= self.contracted[finger]:
+                input_weight[self.CONTRACTED] [finger] = 1.0
+                input_weight[self.RELAXED] [finger] = 0.0
+                input_weight[self.STRAINED] [finger] = 0.0
+            
+            elif self.contracted[finger] < self.fingers[finger] <= self.relaxed[finger]:
+                input_weight[self.CONTRACTED] [finger] = ((self.fingers[finger]    - self.relaxed[finger]) /
+                                                          (self.contracted[finger] - self.relaxed[finger]))
+                input_weight[self.RELAXED] [finger] = 1.0 - input_weight[self.CONTRACTED] [finger]
+                input_weight[self.STRAINED] [finger] = 0.0
 
-        for letra in MAPEAMENTO:
-            if letra['contacts'] == self.contacts:
-                pass
-        
+            elif self.relaxed[finger] < self.fingers[finger] <= self.strained[finger]:
+                input_weight[self.CONTRACTED] [finger] = 0.0
+                input_weight[self.RELAXED] [finger] = ((self.fingers[finger] - self.strained[finger]) /
+                                                       (self.relaxed[finger] - self.strained[finger]))
+                input_weight[self.STRAINED] [finger] = 1.0 - input_weight[self.RELAXED] [finger]
+
+            elif self.fingers[finger] > self.strained[finger]:
+                input_weight[self.CONTRACTED] [finger] = 0.0
+                input_weight[self.RELAXED] [finger] = 0.0
+                input_weight[self.STRAINED] [finger] = 1.0
+
+        print u"** Pesos de entrada **"
+        for inputs in range (self.INPUT_VARIABLES):
+            print "%d: " % inputs,
+            for valor in input_weight[inputs]:
+                print "%d%%" % (valor*100),
+            print
+        print
+
+        print u"** Pesos de saída **"
+
+        # Calcula o peso de cada variável de saída (letras)
+        output_weight = {}
+        max_output_weight = 0.0
+        output_letter = None
+        for letter in self.MAPPING:
+            # Ignora letras que não coincidiram pelos contatos
+            if self.MAPPING[letter]['contacts'] == self.contacts:
+                print "letra %s:" % letter,
+                output_weight [letter] = 0.0
+                
+                for finger in range(5):
+                    finger_input = self.MAPPING[letter]['fingers'][finger]
+                    finger_weight = input_weight [finger_input][finger]
+                    print "%d%%" % (finger_weight*100),
+                    output_weight [letter] += finger_weight
+
+                output_weight [letter] /= 5.0
+                print ": %d%%" % (output_weight[letter]*100)
+
+                if output_weight [letter] > max_output_weight:
+                    max_output_weight = output_weight [letter]
+                    output_letter = letter
+
+        print u"Máximo: %s, %d%%" % (output_letter, max_output_weight*100)
+
+        self.__result = output_letter
+        return self.__result
 
     # translate()
 
     
-
+# Código de teste da classe HTTranslator
 if __name__ == "__main__":
-    esticado = (1, 2, 1, 1, 2)
+    contraido = (1, 2, 1, 1, 2)
     relaxado = (65, 70, 72, 68, 71)
-    contraido = (165, 170, 172, 168, 171)
+    esticado = (165, 170, 172, 168, 171)
 
-    # Letra A
-    dedos = (3, 4, 6, 3, 1)
-    contatos = (True, False, False, False, True)
-    
     tradutor = HTTranslator ()
     tradutor.adjust (esticado, relaxado, contraido)
+
+    # Letra A
+    dedos = (150, 4, 6, 3, 1)
+    contatos = (True, False, False, False, True)
     tradutor.translate (dedos, contatos)
     
     print "Resultado: ", tradutor.result
