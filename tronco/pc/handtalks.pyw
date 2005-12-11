@@ -2,7 +2,7 @@
 # -*- coding: latin-1 -*-
 
 if __name__ == "__main__":
-    import ht.wxgui
+    import ht.wxgui.HTApp
 
-    app = ht.wxgui.HandTalksApp(0)
+    app = ht.wxgui.HTApp(0)
     app.MainLoop()

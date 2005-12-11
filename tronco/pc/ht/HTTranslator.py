@@ -17,72 +17,72 @@ class HTTranslator (object):
     STRAINED, RELAXED, CONTRACTED = range(3)
 
     # Mapeamento das letras
-    TABELA = {
-            'A': {'fingers': (STRAINED, STRAINED, STRAINED, STRAINED, STRAINED),
-                  'contacts': (False, False, False, False, False)},
-            'B': {'fingers': (STRAINED, STRAINED, STRAINED, STRAINED, STRAINED),
-                  'contacts': (False, False, False, False, False)},
-            'C': {'fingers': (STRAINED, STRAINED, STRAINED, STRAINED, STRAINED),
-                  'contacts': (False, False, False, False, False)},
-            'D': {'fingers': (STRAINED, STRAINED, STRAINED, STRAINED, STRAINED),
-                  'contacts': (False, False, False, False, False)},
+    MAPEAMENTO = {
+            'A': {'fingers': (STRAINED, CONTRACTED, CONTRACTED, CONTRACTED, CONTRACTED),
+                  'contacts': (True, False, False, False, True)},
+            'B': {'fingers': (CONTRACTED, STRAINED, STRAINED, STRAINED, STRAINED),
+                  'contacts': (False, False, False, False, True)},
+            'C': {'fingers': (RELAXED, RELAXED, RELAXED, RELAXED, RELAXED),
+                  'contacts': (False, False, False, False, True)},
+            'D': {'fingers': (RELAXED, STRAINED, RELAXED, RELAXED, RELAXED),
+                  'contacts': (False, False, True, False, True)},
             'E': {'fingers': (STRAINED, STRAINED, STRAINED, STRAINED, STRAINED),
-                  'contacts': (False, False, False, False, False)},
+                  'contacts': (False, False, False, False, True)},
             'F': {'fingers': (STRAINED, STRAINED, STRAINED, STRAINED, STRAINED),
-                  'contacts': (False, False, False, False, False)},
+                  'contacts': (False, False, False, False, True)},
             'G': {'fingers': (STRAINED, STRAINED, STRAINED, STRAINED, STRAINED),
-                  'contacts': (False, False, False, False, False)},
+                  'contacts': (False, False, False, False, True)},
             'H': {'fingers': (STRAINED, STRAINED, STRAINED, STRAINED, STRAINED),
-                  'contacts': (False, False, False, False, False)},
+                  'contacts': (False, False, False, False, True)},
             'I': {'fingers': (STRAINED, STRAINED, STRAINED, STRAINED, STRAINED),
-                  'contacts': (False, False, False, False, False)},
+                  'contacts': (False, False, False, False, True)},
             'J': {'fingers': (STRAINED, STRAINED, STRAINED, STRAINED, STRAINED),
-                  'contacts': (False, False, False, False, False)},
+                  'contacts': (False, False, False, False, True)},
             'K': {'fingers': (STRAINED, STRAINED, STRAINED, STRAINED, STRAINED),
-                  'contacts': (False, False, False, False, False)},
+                  'contacts': (False, False, False, False, True)},
             'L': {'fingers': (STRAINED, STRAINED, STRAINED, STRAINED, STRAINED),
-                  'contacts': (False, False, False, False, False)},
+                  'contacts': (False, False, False, False, True)},
             'M': {'fingers': (STRAINED, STRAINED, STRAINED, STRAINED, STRAINED),
-                  'contacts': (False, False, False, False, False)},
+                  'contacts': (False, False, False, False, True)},
             'N': {'fingers': (STRAINED, STRAINED, STRAINED, STRAINED, STRAINED),
-                  'contacts': (False, False, False, False, False)},
+                  'contacts': (False, False, False, False, True)},
             'O': {'fingers': (STRAINED, STRAINED, STRAINED, STRAINED, STRAINED),
-                  'contacts': (False, False, False, False, False)},
+                  'contacts': (False, False, False, False, True)},
             'P': {'fingers': (STRAINED, STRAINED, STRAINED, STRAINED, STRAINED),
-                  'contacts': (False, False, False, False, False)},
+                  'contacts': (False, False, False, False, True)},
             'Q': {'fingers': (STRAINED, STRAINED, STRAINED, STRAINED, STRAINED),
-                  'contacts': (False, False, False, False, False)},
+                  'contacts': (False, False, False, False, True)},
             'R': {'fingers': (STRAINED, STRAINED, STRAINED, STRAINED, STRAINED),
-                  'contacts': (False, False, False, False, False)},
+                  'contacts': (False, False, False, False, True)},
             'S': {'fingers': (STRAINED, STRAINED, STRAINED, STRAINED, STRAINED),
-                  'contacts': (False, False, False, False, False)},
+                  'contacts': (False, False, False, False, True)},
             'T': {'fingers': (STRAINED, STRAINED, STRAINED, STRAINED, STRAINED),
-                  'contacts': (False, False, False, False, False)},
+                  'contacts': (False, False, False, False, True)},
             'U': {'fingers': (STRAINED, STRAINED, STRAINED, STRAINED, STRAINED),
-                  'contacts': (False, False, False, False, False)},
+                  'contacts': (False, False, False, False, True)},
             'V': {'fingers': (STRAINED, STRAINED, STRAINED, STRAINED, STRAINED),
-                  'contacts': (False, False, False, False, False)},
+                  'contacts': (False, False, False, False, True)},
             'W': {'fingers': (STRAINED, STRAINED, STRAINED, STRAINED, STRAINED),
-                  'contacts': (False, False, False, False, False)},
+                  'contacts': (False, False, False, False, True)},
             'X': {'fingers': (STRAINED, STRAINED, STRAINED, STRAINED, STRAINED),
-                  'contacts': (False, False, False, False, False)},
+                  'contacts': (False, False, False, False, True)},
             'Y': {'fingers': (STRAINED, STRAINED, STRAINED, STRAINED, STRAINED),
-                  'contacts': (False, False, False, False, False)},
+                  'contacts': (False, False, False, False, True)},
             'Z': {'fingers': (STRAINED, STRAINED, STRAINED, STRAINED, STRAINED),
-                  'contacts': (False, False, False, False, False)},
+                  'contacts': (False, False, False, False, True)},
             ' ': {'fingers': (STRAINED, STRAINED, STRAINED, STRAINED, STRAINED),
-                  'contacts': (False, False, False, False, False)},
+                  'contacts': (False, False, False, False, True)},
             ',': {'fingers': (STRAINED, STRAINED, STRAINED, STRAINED, STRAINED),
-                  'contacts': (False, False, False, False, False)},
+                  'contacts': (False, False, False, False, True)},
             '.': {'fingers': (STRAINED, STRAINED, STRAINED, STRAINED, STRAINED),
-                  'contacts': (False, False, False, False, False)},
+                  'contacts': (False, False, False, False, True)},
             '!': {'fingers': (STRAINED, STRAINED, STRAINED, STRAINED, STRAINED),
-                  'contacts': (False, False, False, False, False)},
+                  'contacts': (False, False, False, False, True)},
             '?': {'fingers': (STRAINED, STRAINED, STRAINED, STRAINED, STRAINED),
-                  'contacts': (False, False, False, False, False)},
+                  'contacts': (False, False, False, False, True)},
             '\n': {'fingers': (STRAINED, STRAINED, STRAINED, STRAINED, STRAINED),
-                  'contacts': (False, False, False, False, False)}
-            }
+                  'contacts': (False, False, False, False, True)}
+            } # MAPEAMENTO 
 
     def __init__ (self):
         """ Método de inicialização dos atributos
@@ -123,13 +123,36 @@ class HTTranslator (object):
     # adjust()
 
     def translate (fingers=None, contacts=None):
-        if strained is not None:
-            self.strained = strained
-        if relaxed is not None:
-            self.relaxed = relaxed
+        if fingers is not None:
+            self.fingers = fingers 
+        if contacts is not None:
+            self.contacts = contacts 
+
+        # Calcula o peso de cada opção
+        #relaxed_weight
+        
+
+        for letra in MAPEAMENTO:
+            if letra['contacts'] == self.contacts:
+                pass
         
 
     # translate()
 
     
 
+if __name__ == "__main__":
+    esticado = (1, 2, 1, 1, 2)
+    relaxado = (65, 70, 72, 68, 71)
+    contraido = (165, 170, 172, 168, 171)
+
+    # Letra A
+    dedos = (3, 4, 6, 3, 1)
+    contatos = (True, False, False, False, True)
+    
+    tradutor = HTTranslator ()
+    tradutor.adjust (esticado, relaxado, contraido)
+    tradutor.translate (dedos, contatos)
+    
+    print "Resultado: ", tradutor.result
+    

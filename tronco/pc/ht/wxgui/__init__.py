@@ -1,4 +1,5 @@
+#!/usr/bin/env python
 # -*- coding: latin-1 -*-
 
-from handtalks import HandTalksApp
-from ConfigSerial import ConfigSerial
+from HTApp import HTApp
+from HTSerialConfig import HTSerialConfig
