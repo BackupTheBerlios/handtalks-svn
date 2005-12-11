@@ -7,13 +7,13 @@ import serial
 # begin wxGlade: dependencies
 # end wxGlade
 
-class ConfigSerial(wx.Dialog):
+class HTSerialConfig(wx.Dialog):
     def __init__(self, *args, **kwds):
         # Configurações da serial
         self.serial = kwds['serial']
         del kwds['serial']
 
-        # begin wxGlade: ConfigSerial.__init__
+        # begin wxGlade: HTSerialConfig.__init__
         kwds["style"] = wx.DEFAULT_DIALOG_STYLE
         wx.Dialog.__init__(self, *args, **kwds)
         self.sizerFluxo_staticbox = wx.StaticBox(self, -1, "Controle de Fluxo")
@@ -74,7 +74,7 @@ class ConfigSerial(wx.Dialog):
 
 
     def __set_properties(self):
-        # begin wxGlade: ConfigSerial.__set_properties
+        # begin wxGlade: HTSerialConfig.__set_properties
         self.SetTitle(u"Configuração da Serial")
         self.porta.SetSelection(0)
         self.velocidade.SetSelection(0)
@@ -85,7 +85,7 @@ class ConfigSerial(wx.Dialog):
         # end wxGlade
 
     def __do_layout(self):
-        # begin wxGlade: ConfigSerial.__do_layout
+        # begin wxGlade: HTSerialConfig.__do_layout
         sizerJanela = wx.BoxSizer(wx.VERTICAL)
         sizerBotoes = wx.BoxSizer(wx.HORIZONTAL)
         sizerFluxo = wx.StaticBoxSizer(self.sizerFluxo_staticbox, wx.HORIZONTAL)
@@ -121,7 +121,7 @@ class ConfigSerial(wx.Dialog):
         self.Layout()
         # end wxGlade
 
-    def pressionouOK(self, event): # wxGlade: ConfigSerial.<event_handler>
+    def pressionouOK(self, event): # wxGlade: HTSerialConfig.<event_handler>
         self.serial.port     = self.porta.GetSelection()
         self.serial.baudrate = self.serial.BAUDRATES[self.velocidade.GetSelection()]
         self.serial.bytesize = self.serial.BYTESIZES[self.dados.GetSelection()]
@@ -131,6 +131,6 @@ class ConfigSerial(wx.Dialog):
         self.serial.xonxoff  = self.cfSoftware.GetValue()
         self.EndModal(event.GetId())
 
-# end of class ConfigSerial
+# end of class HTSerialConfig
 
 

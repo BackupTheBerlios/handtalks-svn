@@ -5,7 +5,7 @@ import wx
 #import tocador
 import serial
 import threading
-from ConfigSerial import ConfigSerial
+from HTSerialConfig import HTSerialConfig
 
 # begin wxGlade: dependencies
 # end wxGlade
@@ -54,7 +54,7 @@ if not caminho.endswith ("wxgui"):
 os.chdir (caminho)
 """
 
-class JanelaPrincipal(wx.Frame):
+class HTMain(wx.Frame):
     def __init__(self, *args, **kwds):
 
         # Valores padrões da serial
@@ -72,7 +72,7 @@ class JanelaPrincipal(wx.Frame):
         self.thread = None
         self.alive = threading.Event()               
 
-        # begin wxGlade: JanelaPrincipal.__init__
+        # begin wxGlade: HTMain.__init__
         kwds["style"] = wx.DEFAULT_FRAME_STYLE
         wx.Frame.__init__(self, *args, **kwds)
         self.divisor = wx.SplitterWindow(self, -1, style=wx.SP_NOBORDER)
@@ -149,7 +149,7 @@ class JanelaPrincipal(wx.Frame):
 
 
     def __set_properties(self):
-        # begin wxGlade: JanelaPrincipal.__set_properties
+        # begin wxGlade: HTMain.__set_properties
         self.SetTitle("Hand Talks!")
         self.SetBackgroundColour(wx.SystemSettings_GetColour(wx.SYS_COLOUR_3DFACE))
         self.janela_statusbar.SetStatusWidths([-1, 60, 60, 20, 20, 20, 120])
@@ -181,7 +181,7 @@ class JanelaPrincipal(wx.Frame):
 
 
     def __do_layout(self):
-        # begin wxGlade: JanelaPrincipal.__do_layout
+        # begin wxGlade: HTMain.__do_layout
         sizerJanela = wx.BoxSizer(wx.HORIZONTAL)
         sizerHistorico = wx.StaticBoxSizer(self.sizerHistorico_staticbox, wx.VERTICAL)
         sizerPrincipal = wx.BoxSizer(wx.VERTICAL)
@@ -245,11 +245,11 @@ class JanelaPrincipal(wx.Frame):
             self.timerStatus.start()
 
 
-    def configuraSerial(self, event): # wxGlade: JanelaPrincipal.<event_handler>
+    def configuraSerial(self, event): # wxGlade: HTMain.<event_handler>
         if self.serial.isOpen():
             self.alternaComunicacao (event)
 
-        dlg = ConfigSerial (None, -1, "", serial=self.serial)
+        dlg = HTSerialConfig (None, -1, "", serial=self.serial)
         
         if (dlg.ShowModal() == wx.ID_OK):
             self.atualizaStatusSerial()
@@ -259,7 +259,7 @@ class JanelaPrincipal(wx.Frame):
         dlg.Destroy()
 
         
-    def trocouLetra(self, event): # wxGlade: JanelaPrincipal.<event_handler>
+    def trocouLetra(self, event): # wxGlade: HTMain.<event_handler>
         letra = self.caixaLetras.GetStringSelection()
         
         self.letraExibida.SetLabel (letra)
@@ -287,7 +287,7 @@ class JanelaPrincipal(wx.Frame):
             self.reportaErro(u'Som não encontrado!')
 
 
-    def fechaAplicacao(self, event): # wxGlade: JanelaPrincipal.<event_handler>
+    def fechaAplicacao(self, event): # wxGlade: HTMain.<event_handler>
         if event.CanVeto:
             dlg = wx.MessageDialog(self, u"Tem certeza que deseja sair?",
                                    u'Confirmação',
@@ -304,11 +304,11 @@ class JanelaPrincipal(wx.Frame):
         self.Destroy()
 
 
-    def sair(self, event): # wxGlade: JanelaPrincipal.<event_handler>
+    def sair(self, event): # wxGlade: HTMain.<event_handler>
         self.Close()
 
 
-    def enviarComando(self, event): # wxGlade: JanelaPrincipal.<event_handler>
+    def enviarComando(self, event): # wxGlade: HTMain.<event_handler>
         if not self.serial.isOpen():
             self.reportaErro(u"Porta não está aberta!")
             return
@@ -320,7 +320,7 @@ class JanelaPrincipal(wx.Frame):
         self.comando.SetFocus ()
 
 
-    def alternaComunicacao(self, event, desejo=None): # wxGlade: JanelaPrincipal.<event_handler>
+    def alternaComunicacao(self, event, desejo=None): # wxGlade: HTMain.<event_handler>
         comunica = not self.serial.isOpen()
         if desejo is not None:
             if not comunica == desejo:
@@ -361,7 +361,7 @@ class JanelaPrincipal(wx.Frame):
             self.janela_toolbar.Realize()
 
 
-    def sobreHandtalks(self, event): # wxGlade: JanelaPrincipal.<event_handler>
+    def sobreHandtalks(self, event): # wxGlade: HTMain.<event_handler>
         dlg = wx.MessageDialog(self,
 u"""HandTalks!
 Versão 0.2
@@ -414,6 +414,6 @@ Orientador: Prof. Jorge Kinoshita""",
                     text += char
 
 
-# end of class JanelaPrincipal
+# end of class HTMain
 
 
