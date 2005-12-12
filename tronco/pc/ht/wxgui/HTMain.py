@@ -166,7 +166,7 @@ class HTMain(wx.Frame):
         self.caixaLetras.SetMinSize((50, 21))
         self.caixaLetras.SetSelection(0)
         self.letraExibida.SetFont(wx.Font(150, wx.DECORATIVE, wx.NORMAL, wx.NORMAL, 0, ""))
-        self.historico.SetFont(wx.Font(30, wx.DECORATIVE, wx.NORMAL, wx.NORMAL, 0, ""))
+        self.historico.SetFont(wx.Font(10, wx.DECORATIVE, wx.NORMAL, wx.NORMAL, 0, ""))
         self.historico.SetToolTipString(u"Histórico da comunicação com a luva")
         self.historico.Enable(False)
         # end wxGlade
@@ -350,7 +350,7 @@ class HTMain(wx.Frame):
                 self.reportaErro(u"Erro ao abrir a porta!")
         finally:
             self.janela_menubar.Check (ID_COMUNIC, comunica)
-            self.enviar.Enable (comunica)
+#            self.enviar.Enable (comunica)
             self.resposta.Enable (comunica)
             self.historico.Enable (comunica)
             if comunica:
@@ -395,7 +395,7 @@ Orientador: Prof. Jorge Kinoshita""",
         
     def OnSerialRead(self, event):
         """Handle input from the serial port."""
-        text = ''.join([(c >= ' ') and c or '<%d>' % ord(c)  for c in event.data])
+        text = ''.join([(' ' <= c < chr(128)) and c or '<%d>' % ord(c)  for c in event.data])
         self.resposta.SetValue (text)
         self.historico.AppendText ('-> ' + text + '\n')
 
@@ -403,16 +403,20 @@ Orientador: Prof. Jorge Kinoshita""",
         """Thread that handles the incomming traffic. Does the basic input
            transformation (newlines) and generates an SerialRxEvent"""
         text = ''
+        lastChar = ''
         while self.alive.isSet():               #loop while alive event is true
             char = self.serial.read(1)          #read one, with timout
             if char:                            #check if not timeout
-                if char == '\n' or char == '\r':
+                if char == '#' and lastChar == '#':
                     if text:
                         event = SerialRxEvent(self.GetId(), text)
                         self.GetEventHandler().AddPendingEvent(event)
                         text = ''
                 else:
                     text += char
+
+                lastChar = char
+            
 
 
 # end of class HTMain
