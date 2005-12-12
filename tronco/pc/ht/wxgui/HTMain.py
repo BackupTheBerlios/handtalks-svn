@@ -7,6 +7,8 @@ import wx
 import serial
 import threading
 from HTSerialConfig import HTSerialConfig
+from ht.HTTranslator import HTTranslator
+
 
 # begin wxGlade: dependencies
 # end wxGlade
@@ -57,6 +59,9 @@ os.chdir (caminho)
 
 class HTMain(wx.Frame):
     def __init__(self, *args, **kwds):
+        # Última leitura
+        self.last_letter = ''
+        self.letter_count = 0
 
         # Valores padrões da serial
         self.serial = serial.Serial()
@@ -68,6 +73,13 @@ class HTMain(wx.Frame):
         self.serial.timeout = TIMEOUT_SERIAL;
         self.serial.rtscts = False;
         self.serial.xonxoff = False;
+
+        # Tradutor
+        contraido = (1, 2, 1, 1, 2)
+        relaxado = (45, 30, 42, 58, 41)
+        esticado = (165, 170, 172, 168, 171)
+        self.translator = HTTranslator ()
+        self.translator.adjust (esticado, relaxado, contraido)
 
         # Threading
         self.thread = None
@@ -259,10 +271,10 @@ class HTMain(wx.Frame):
 
         dlg.Destroy()
 
-        
-    def trocouLetra(self, event): # wxGlade: HTMain.<event_handler>
-        letra = self.caixaLetras.GetStringSelection()
-        
+    def exibeLetra (self, letra=None):
+        if letra is None:
+            letra = ''
+            
         self.letraExibida.SetLabel (letra)
         self.reportaErro(u'Reproduzindo Áudio...')
 
@@ -287,6 +299,12 @@ class HTMain(wx.Frame):
         except IOError, v:
             self.reportaErro(u'Som não encontrado!')
 
+
+        
+    def trocouLetra(self, event): # wxGlade: HTMain.<event_handler>
+        letra = self.caixaLetras.GetStringSelection()
+        self.exibeLetra (letra)
+        
 
     def fechaAplicacao(self, event): # wxGlade: HTMain.<event_handler>
         if event.CanVeto:
@@ -316,7 +334,7 @@ class HTMain(wx.Frame):
             
         self.serial.write (str(self.comando.GetValue()) + '\r\n')
 
-        self.historico.AppendText ('<- ' + str(self.comando.GetValue()) + '\r\n')
+#        self.historico.AppendText ('<- ' + str(self.comando.GetValue()) + '\r\n')
         self.comando.SetSelection (-1, -1)
         self.comando.SetFocus ()
 
@@ -397,7 +415,37 @@ Orientador: Prof. Jorge Kinoshita""",
         """Handle input from the serial port."""
         text = ''.join([(' ' <= c < chr(128)) and c or '<%d>' % ord(c)  for c in event.data])
         self.resposta.SetValue (text)
-        self.historico.AppendText ('-> ' + text + '\n')
+
+        # Extrai valores dos ADs
+        fingers = [ int(x) for x in event.data[1:-3].split ('#') ]
+
+        # Extrai valores dos contatos
+        hex = int (event.data[-2], 16)
+        contacts = []
+        for i in range (4):
+            bit = (hex & 2**i) > 0
+            contacts.append (bit)
+
+        result = translator.translate (fingers, contacts)
+
+        if result == self.last_letter:
+            self.letter_count += 1
+        else:
+            self.last_letter = result
+            self.letter_count = 1
+
+        if self.letter_count == 10 and result is not None:
+            if result == '<CR>':
+                result = '\n'
+            elif result == '<SP>':
+                result = ' '
+            elif result == '<BS>':
+                result = self.historico.GetText()[:-1]
+                self.historico.Clear()
+                
+            self.historico.AppendText (result)
+    # OnSerialRead
+
 
     def ComPortThread(self):
         """Thread that handles the incomming traffic. Does the basic input

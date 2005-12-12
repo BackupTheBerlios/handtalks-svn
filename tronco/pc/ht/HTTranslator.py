@@ -20,69 +20,71 @@ class HTTranslator (object):
     # Mapeamento das letras
     MAPPING = {
             'A': {'fingers': (STRAINED, CONTRACTED, CONTRACTED, CONTRACTED, CONTRACTED),
-                  'contacts': (True, False, False, True)},
-            'B': {'fingers': (CONTRACTED, STRAINED, STRAINED, STRAINED, STRAINED),
-                  'contacts': (False, False, False, True)},
-            'C': {'fingers': (RELAXED, RELAXED, RELAXED, RELAXED, RELAXED),
-                  'contacts': (False, False, False, True)},
-            'D': {'fingers': (RELAXED, STRAINED, RELAXED, RELAXED, RELAXED),
-                  'contacts': (False, True, False, False)},
-            'E': {'fingers': (CONTRACTED, CONTRACTED, CONTRACTED, CONTRACTED, CONTRACTED),
-                  'contacts': (False, False, False, True)},
-            'F': {'fingers': (RELAXED, RELAXED, STRAINED, STRAINED, STRAINED),
-                  'contacts': (True, False, False, False)},
-            'G': {'fingers': (RELAXED, STRAINED, STRAINED, CONTRACTED, CONTRACTED),
-                  'contacts': (True, False, False, False)},
-            'H': {'fingers': (RELAXED, STRAINED, STRAINED, CONTRACTED, CONTRACTED),
                   'contacts': (False, False, True, True)},
-            'I': {'fingers': (CONTRACTED, CONTRACTED, CONTRACTED, CONTRACTED, STRAINED),
-                  'contacts': (False, False, False, True)},
-            'J': {'fingers': (CONTRACTED, CONTRACTED, CONTRACTED, CONTRACTED, RELAXED),
-                  'contacts': (False, False, False, True)},
-            'K': {'fingers': (RELAXED, STRAINED, STRAINED, CONTRACTED, CONTRACTED),
+            'B': {'fingers': (CONTRACTED, STRAINED, STRAINED, STRAINED, STRAINED),
                   'contacts': (False, False, True, False)},
+            'C': {'fingers': (RELAXED, RELAXED, RELAXED, RELAXED, RELAXED),
+                  'contacts': (False, False, True, False)},
+            'D': {'fingers': (RELAXED, STRAINED, RELAXED, RELAXED, RELAXED),
+                  'contacts': (True, False, False, False)},
+            'E': {'fingers': (CONTRACTED, CONTRACTED, CONTRACTED, CONTRACTED, CONTRACTED),
+                  'contacts': (False, False, True, False)},
+            'F': {'fingers': (RELAXED, RELAXED, STRAINED, STRAINED, STRAINED),
+                  'contacts': (False, False, False, True)},
+            'G': {'fingers': (RELAXED, STRAINED, CONTRACTED, CONTRACTED, CONTRACTED),
+                  'contacts': (False, False, False, True)},
+            'H': {'fingers': (RELAXED, STRAINED, STRAINED, CONTRACTED, CONTRACTED),
+                  'contacts': (False, True, True, False)},
+            'I': {'fingers': (RELAXED, CONTRACTED, CONTRACTED, CONTRACTED, STRAINED),
+                  'contacts': (False, False, True, False)},
+            'J': {'fingers': (RELAXED, CONTRACTED, CONTRACTED, CONTRACTED, RELAXED),
+                  'contacts': (False, False, True, False)},
+            'K': {'fingers': (RELAXED, STRAINED, STRAINED, CONTRACTED, CONTRACTED),
+                  'contacts': (False, True, False, False)},
             'L': {'fingers': (STRAINED, STRAINED, CONTRACTED, CONTRACTED, CONTRACTED),
                   'contacts': (False, False, False, False)},
-            'M': {'fingers': (CONTRACTED, STRAINED, STRAINED, STRAINED, CONTRACTED),
-                  'contacts': (False, False, False, True)},
-            'N': {'fingers': (CONTRACTED, STRAINED, STRAINED, CONTRACTED, CONTRACTED),
-                  'contacts': (False, False, False, True)},
-            'O': {'fingers': (RELAXED, RELAXED, RELAXED, RELAXED, RELAXED),
-                  'contacts': (False, True, False, True)},
-            'P': {'fingers': (RELAXED, STRAINED, STRAINED, CONTRACTED, CONTRACTED),
+            'M': {'fingers': (RELAXED, STRAINED, STRAINED, STRAINED, CONTRACTED),
                   'contacts': (False, False, True, False)},
-            'Q': {'fingers': (STRAINED, STRAINED, STRAINED, STRAINED, STRAINED),
+            'N': {'fingers': (RELAXED, STRAINED, STRAINED, CONTRACTED, CONTRACTED),
+                  'contacts': (False, False, True, True)},
+            'O': {'fingers': (RELAXED, RELAXED, RELAXED, RELAXED, RELAXED),
+                  'contacts': (True, False, True, False)},
+            'P': {'fingers': (RELAXED, STRAINED, RELAXED, CONTRACTED, CONTRACTED),
+                  'contacts': (False, True, False, False)},
+            'Q': {'fingers': (RELAXED, RELAXED, CONTRACTED, CONTRACTED, CONTRACTED),
                   'contacts': (False, False, False, True)},
-            'R': {'fingers': (CONTRACTED, STRAINED, STRAINED, CONTRACTED, CONTRACTED),
-                  'contacts': (False, False, False, False)},
-            'S': {'fingers': (CONTRACTED, CONTRACTED, CONTRACTED, CONTRACTED, CONTRACTED),
-                  'contacts': (False, False, False, True)},
+            'R': {'fingers': (RELAXED, STRAINED, RELAXED, CONTRACTED, CONTRACTED),
+                  'contacts': (False, False, True, False)},
+            'S': {'fingers': (RELAXED, CONTRACTED, CONTRACTED, CONTRACTED, CONTRACTED),
+                  'contacts': (False, False, True, False)},
             'T': {'fingers': (RELAXED, RELAXED, STRAINED, STRAINED, STRAINED),
                   'contacts': (False, False, False, False)},
             'U': {'fingers': (RELAXED, STRAINED, STRAINED, CONTRACTED, CONTRACTED),
-                  'contacts': (False, False, False, True)},
+                  'contacts': (False, False, True, False)},
             'V': {'fingers': (RELAXED, STRAINED, STRAINED, CONTRACTED, CONTRACTED),
                   'contacts': (False, False, False, False)},
-            'W': {'fingers': (STRAINED, STRAINED, STRAINED, STRAINED, STRAINED),
-                  'contacts': (False, False, False, True)},
-            'X': {'fingers': (STRAINED, STRAINED, STRAINED, STRAINED, STRAINED),
-                  'contacts': (False, False, False, True)},
-            'Y': {'fingers': (STRAINED, STRAINED, STRAINED, STRAINED, STRAINED),
-                  'contacts': (False, False, False, True)},
-            'Z': {'fingers': (STRAINED, STRAINED, STRAINED, STRAINED, STRAINED),
-                  'contacts': (False, False, False, True)},
-            ' ': {'fingers': (STRAINED, STRAINED, STRAINED, STRAINED, STRAINED),
-                  'contacts': (False, False, False, True)},
-            ',': {'fingers': (STRAINED, STRAINED, STRAINED, STRAINED, STRAINED),
-                  'contacts': (False, False, False, True)},
+            'W': {'fingers': (RELAXED, STRAINED, STRAINED, STRAINED, CONTRACTED),
+                  'contacts': (False, False, False, False)},
+            'X': {'fingers': (RELAXED, RELAXED, CONTRACTED, CONTRACTED, CONTRACTED),
+                  'contacts': (False, False, False, False)},
+            'Y': {'fingers': (STRAINED, CONTRACTED, CONTRACTED, CONTRACTED, STRAINED),
+                  'contacts': (False, False, True, False)},
+            'Z': {'fingers': (RELAXED, STRAINED, CONTRACTED, CONTRACTED, CONTRACTED),
+                  'contacts': (False, False, False, False)},
+            ',': {'fingers': (RELAXED, CONTRACTED, CONTRACTED, STRAINED, STRAINED),
+                  'contacts': (False, False, True, False)},
             '.': {'fingers': (STRAINED, STRAINED, STRAINED, STRAINED, STRAINED),
-                  'contacts': (False, False, False, True)},
-            '!': {'fingers': (STRAINED, STRAINED, STRAINED, STRAINED, STRAINED),
-                  'contacts': (False, False, False, True)},
-            '?': {'fingers': (STRAINED, STRAINED, STRAINED, STRAINED, STRAINED),
-                  'contacts': (False, False, False, True)},
-            '\n': {'fingers': (STRAINED, STRAINED, STRAINED, STRAINED, STRAINED),
-                  'contacts': (False, False, False, True)}
+                  'contacts': (True, False, True, False)},
+            '!': {'fingers': (STRAINED, STRAINED, STRAINED, CONTRACTED, CONTRACTED),
+                  'contacts': (False, False, True, False)},
+            '?': {'fingers': (STRAINED, STRAINED, STRAINED, CONTRACTED, CONTRACTED),
+                  'contacts': (False, False, False, False)},
+            '<SP>': {'fingers': (RELAXED, STRAINED, STRAINED, STRAINED, STRAINED),
+                  'contacts': (False, False, True, True)},
+            '<BS>': {'fingers': (STRAINED, STRAINED, STRAINED, STRAINED, STRAINED),
+                  'contacts': (False, False, True, False)},
+            '<CR>': {'fingers': (STRAINED, STRAINED, CONTRACTED, CONTRACTED, STRAINED),
+                  'contacts': (False, False, False, False)}
     } # MAPPING 
 
 
@@ -140,69 +142,88 @@ class HTTranslator (object):
             self.contacts = contacts 
 
         # Calcula o peso de cada variável de entrada (contraído etc.)
-        input_weight = [ [0.0 for finger in range(5)]
-                         for input in range (self.INPUT_VARIABLES) ]
+        u_in = [ [0.0 for finger in range(5)]
+                 for input in range (self.INPUT_VARIABLES) ]
         for finger in range(5):
             if self.fingers[finger] <= self.contracted[finger]:
-                input_weight[self.CONTRACTED] [finger] = 1.0
-                input_weight[self.RELAXED] [finger] = 0.0
-                input_weight[self.STRAINED] [finger] = 0.0
+                u_in[self.CONTRACTED] [finger] = 1.0
+                u_in[self.RELAXED] [finger] = 0.0
+                u_in[self.STRAINED] [finger] = 0.0
             
             elif self.contracted[finger] < self.fingers[finger] <= self.relaxed[finger]:
-                input_weight[self.CONTRACTED] [finger] = ((self.fingers[finger]    - self.relaxed[finger]) /
-                                                          (self.contracted[finger] - self.relaxed[finger]))
-                input_weight[self.RELAXED] [finger] = 1.0 - input_weight[self.CONTRACTED] [finger]
-                input_weight[self.STRAINED] [finger] = 0.0
+                u_in[self.CONTRACTED] [finger] = ((self.fingers[finger]    - self.relaxed[finger]) /
+                                                  (self.contracted[finger] - self.relaxed[finger]))
+                u_in[self.RELAXED] [finger] = 1.0 - u_in[self.CONTRACTED] [finger]
+                u_in[self.STRAINED] [finger] = 0.0
 
             elif self.relaxed[finger] < self.fingers[finger] <= self.strained[finger]:
-                input_weight[self.CONTRACTED] [finger] = 0.0
-                input_weight[self.RELAXED] [finger] = ((self.fingers[finger] - self.strained[finger]) /
-                                                       (self.relaxed[finger] - self.strained[finger]))
-                input_weight[self.STRAINED] [finger] = 1.0 - input_weight[self.RELAXED] [finger]
+                u_in[self.CONTRACTED] [finger] = 0.0
+                u_in[self.RELAXED] [finger] = ((self.fingers[finger] - self.strained[finger]) /
+                                               (self.relaxed[finger] - self.strained[finger]))
+                u_in[self.STRAINED] [finger] = 1.0 - u_in[self.RELAXED] [finger]
 
             elif self.fingers[finger] > self.strained[finger]:
-                input_weight[self.CONTRACTED] [finger] = 0.0
-                input_weight[self.RELAXED] [finger] = 0.0
-                input_weight[self.STRAINED] [finger] = 1.0
+                u_in[self.CONTRACTED] [finger] = 0.0
+                u_in[self.RELAXED] [finger] = 0.0
+                u_in[self.STRAINED] [finger] = 1.0
 
-        print u"** Pesos de entrada **"
+        # Apenas exibe
+        print u"Pesos de entrada:"
         NOMES = [u'Contraído', 'Relaxado', 'Esticado']
         for inputs in range (self.INPUT_VARIABLES):
             print "%s:" % NOMES[inputs],
-            for valor in input_weight[inputs]:
+            for valor in u_in[inputs]:
                 print "\t%d%%" % (valor*100),
             print
         print
 
-        print u"** Pesos de saída **"
+        print u"Pesos de saída:"
 
         # Calcula o peso de cada variável de saída (letras)
-        output_weight = {}
-        max_output_weight = 0.0
-        output_letter = None
+        u_out = {}
+        max_u_out = [0.0, 0.0]
+        out_letter = [None, None]
         for letter in self.MAPPING:
             # Ignora letras que não coincidiram pelos contatos
             if self.MAPPING[letter]['contacts'] == self.contacts:
-                print "%s:" % letter,
-                output_weight [letter] = 0.0
+                print "%s:\t" % letter,
+                u_out [letter] = 0.0
                 
                 for finger in range(5):
                     finger_input = self.MAPPING[letter]['fingers'][finger]
-                    finger_weight = input_weight [finger_input][finger]
+                    finger_weight = u_in [finger_input][finger]
                     print "\t%d%%" % (finger_weight*100),
-                    output_weight [letter] += finger_weight
+                    u_out [letter] += finger_weight
 
-                output_weight [letter] /= 5.0
-                print "\t=%d%%" % (output_weight[letter]*100)
+                u_out [letter] /= 5.0
+                print "\t=%d%%" % (u_out[letter]*100)
 
-                if output_weight [letter] > max_output_weight:
-                    max_output_weight = output_weight [letter]
-                    output_letter = letter
+                if u_out [letter] > max_u_out[0]:
+                    max_u_out[1] = max_u_out[0]
+                    max_u_out[0] = u_out [letter]
+                    out_letter[1] = out_letter[0]
+                    out_letter[0] = letter
+                elif u_out [letter] > max_u_out[1]:
+                    max_u_out[1] = u_out [letter]
+                    out_letter[1] = letter
 
-        print u"Máximo: %s, %d%%" % (output_letter, max_output_weight*100)
+        
+        # Chance maior de 70%
+        if max_u_out[0] > 0.7:
+            # Checa se deu empate em 5%
+            advantage = (max_u_out[0] - max_u_out[1]) / max_u_out[0]
+            if advantage <= 0.05:
+                print u"Empate entre %s e %s" % tuple(out_letter)
+                out_letter[0] = None
+            else:
+                print u"Máximo: %s, %d%%" % (out_letter[0], max_u_out[0]*100)
+        else:
+            out_letter[0] = None
+            print u"Nenhuma letra"
+
         print
 
-        self.__result = output_letter
+        self.__result = out_letter[0]
         return self.__result
 
     # translate()
@@ -211,16 +232,174 @@ class HTTranslator (object):
 # Código de teste da classe HTTranslator
 if __name__ == "__main__":
     contraido = (1, 2, 1, 1, 2)
-    relaxado = (65, 70, 72, 68, 71)
+    relaxado = (45, 30, 42, 58, 41)
     esticado = (165, 170, 172, 168, 171)
 
     tradutor = HTTranslator ()
     tradutor.adjust (esticado, relaxado, contraido)
 
-    # Letra A
+    print "\n** Letra A **"
     dedos = (150, 4, 6, 3, 1)
-    contatos = (True, False, False, False, True)
+    contatos = (False, False, True, True)
+    tradutor.translate (dedos, contatos)
+
+    print "\n** Letra B **"
+    dedos = (1, 140, 164, 137, 128)
+    contatos = (False, False, True, False)
+    tradutor.translate (dedos, contatos)
+
+    print "\n** Letra C **"
+    dedos = (50, 40, 64, 37, 28)
+    contatos = (False, False, True, False)
+    tradutor.translate (dedos, contatos)
+
+    print "\n** Letra D **"
+    dedos = (50, 140, 64, 37, 28)
+    contatos = (True, False, False, False)
     tradutor.translate (dedos, contatos)
     
-    print "Resultado: ", tradutor.result
+    print "\n** Letra E **"              
+    dedos = (5, 1, 4, 3, 2)
+    contatos = (False, False, True, False)
+    tradutor.translate (dedos, contatos)
+
+    print "\n** Letra F **"
+    dedos = (35, 47, 147, 163, 172)
+    contatos = (False, False, False, True)
+    tradutor.translate (dedos, contatos)
     
+    print "\n** Letra G **"
+    dedos = (35, 147, 1, 3, 2)
+    contatos = (False, False, False, True)
+    tradutor.translate (dedos, contatos)
+    
+    print "\n** Letra H **"
+    dedos = (35, 147, 152, 3, 2)
+    contatos = (False, True, True, False)
+    tradutor.translate (dedos, contatos)
+
+    print "\n** Letra I **"
+    dedos = (35, 4, 1, 3, 152)
+    contatos = (False, False, True, False)
+    tradutor.translate (dedos, contatos)
+
+    print "\n** Letra J **"
+    dedos = (35, 4, 1, 3, 52)
+    contatos = (False, False, True, False)
+    tradutor.translate (dedos, contatos)
+
+    print "\n** Letra K **"
+    dedos = (35, 154, 161, 3, 2)
+    contatos = (False, True, False, False)
+    tradutor.translate (dedos, contatos)
+
+    print "\n** Letra L **"
+    dedos = (135, 174, 1, 3, 5)
+    contatos = (False, False, False, False)
+    tradutor.translate (dedos, contatos)
+
+    print "\n** Letra M **"
+    dedos = (45, 174, 163, 138, 5)
+    contatos = (False, False, True, False)
+    tradutor.translate (dedos, contatos)
+
+    print "\n** Letra N **"
+    dedos = (45, 174, 163, 8, 5)
+    contatos = (False, False, True, True)
+    tradutor.translate (dedos, contatos)
+
+    print "\n** Letra O **"
+    dedos = (53, 48, 32, 10, 59)
+    contatos = (True, False, True, False)
+    tradutor.translate (dedos, contatos)
+
+    print "\n** Letra P **"
+    dedos = (53, 148, 82, 1, 9)
+    contatos = (False, True, False, False)
+    tradutor.translate (dedos, contatos)
+
+    print "\n** Letra Q **"
+    dedos = (53, 48, 2, 1, 9)
+    contatos = (False, False, False, True)
+    tradutor.translate (dedos, contatos)
+
+    print "\n** Letra R **"
+    dedos = (53, 148, 68, 1, 9)
+    contatos = (False, False, True, False)
+    tradutor.translate (dedos, contatos)
+
+    print "\n** Letra S **"
+    dedos = (53, 4, 6, 1, 9)
+    contatos = (False, False, True, False)
+    tradutor.translate (dedos, contatos)
+
+    print "\n** Letra T **"
+    dedos = (53, 74, 163, 175, 190)
+    contatos = (False, False, False, False)
+    tradutor.translate (dedos, contatos)
+
+    print "\n** Letra U **"
+    dedos = (53, 174, 163, 1, 9)
+    contatos = (False, False, True, False)
+    tradutor.translate (dedos, contatos)
+
+    print "\n** Letra V **"
+    dedos = (53, 174, 163, 1, 9)
+    contatos = (False, False, False, False)
+    tradutor.translate (dedos, contatos)
+
+    print "\n** Letra W **"
+    dedos = (53, 174, 163, 158, 9)
+    contatos = (False, False, False, False)
+    tradutor.translate (dedos, contatos)
+
+    print "\n** Letra X **"
+    dedos = (53, 74, 6, 5, 9)
+    contatos = (False, False, False, False)
+    tradutor.translate (dedos, contatos)
+
+    print "\n** Letra Y **"
+    dedos = (153, 4, 6, 5, 179)
+    contatos = (False, False, True, False)
+    tradutor.translate (dedos, contatos)
+
+    print "\n** Letra Z **"
+    dedos = (53, 164, 6, 5, 1)
+    contatos = (False, False, False, False)
+    tradutor.translate (dedos, contatos)
+
+    print "\n** Letra . **"
+    dedos = (153, 174, 163, 175, 190)
+    contatos = (True, False, True, False)
+    tradutor.translate (dedos, contatos)
+
+    print "\n** Letra , **"
+    dedos = (53, 4, 1, 163, 159)
+    contatos = (False, False, True, False)
+    tradutor.translate (dedos, contatos)
+
+    print "\n** Letra ! **"
+    dedos = (153, 174, 163, 1, 9)
+    contatos = (False, False, True, False)
+    tradutor.translate (dedos, contatos)
+
+    print "\n** Letra ? **"
+    dedos = (157, 174, 163, 5, 9)
+    contatos = (False, False, False, False)
+    tradutor.translate (dedos, contatos)
+
+    print "\n** Letra <SP> **"
+    dedos = (153, 174, 163, 158, 179)
+    contatos = (False, False, True, True)
+    tradutor.translate (dedos, contatos)
+
+    print "\n** Letra <BS> **"
+    dedos = (153, 164, 186, 175, 179)
+    contatos = (False, False, True, False)
+    tradutor.translate (dedos, contatos)
+
+    print "\n** Letra <CR> **"
+    dedos = (153, 164, 6, 5, 174)
+    contatos = (False, False, False, False)
+    tradutor.translate (dedos, contatos)
+
