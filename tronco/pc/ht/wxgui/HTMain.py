@@ -61,12 +61,13 @@ class HTMain(wx.Frame):
     def __init__(self, *args, **kwds):
         # Última leitura
         self.last_letter = ''
+        self.last_valid_letter = ''
         self.letter_count = 0
 
         # Valores padrões da serial
         self.serial = serial.Serial()
         self.serial.port = 0;
-        self.serial.baudrate = 9600;
+        self.serial.baudrate = 19200;
         self.serial.bytesize = 8;
         self.serial.parity = serial.PARITY_NONE;
         self.serial.stopbits = 1;
@@ -75,9 +76,9 @@ class HTMain(wx.Frame):
         self.serial.xonxoff = False;
 
         # Tradutor
-        contraido = (1, 2, 1, 1, 2)
-        relaxado = (45, 30, 42, 58, 41)
-        esticado = (165, 170, 172, 168, 171)
+        contraido = [1, 2, 1, 1, 2]
+        relaxado = [30, 30, 25, 20, 30]
+        esticado = [180, 170, 180, 168, 120]
         self.translator = HTTranslator ()
         self.translator.adjust (esticado, relaxado, contraido)
 
@@ -134,10 +135,10 @@ class HTMain(wx.Frame):
         self.janela_toolbar.AddLabelTool(ID_SOBRE, "Sobre...", wx.Bitmap("imagem/Info.png", wx.BITMAP_TYPE_ANY), wx.NullBitmap, wx.ITEM_NORMAL, "Sobre...", u"Informações sobre o HandTalks!")
         self.janela_toolbar.AddLabelTool(ID_SAIR, "Sair", wx.Bitmap("imagem/Fechar.png", wx.BITMAP_TYPE_ANY), wx.NullBitmap, wx.ITEM_NORMAL, "Sair", "Fecha o HandTalks!")
         # Tool Bar end
-        self.resposta = wx.TextCtrl(self.ladoEsquerdo, -1, "", style=wx.TE_READONLY)
-        self.caixaLetras = wx.Choice(self.ladoEsquerdo, -1, choices=[])
+        self.resposta = wx.TextCtrl(self.ladoEsquerdo, -1, "", style=wx.TE_MULTILINE|wx.TE_READONLY)
         self.letraExibida = wx.StaticText(self.ladoEsquerdo, -1, "A", style=wx.ALIGN_CENTRE|wx.ST_NO_AUTORESIZE)
-        self.historico = wx.TextCtrl(self.ladoDireito, -1, "Teste", style=wx.TE_MULTILINE|wx.TE_READONLY)
+        self.historico = wx.TextCtrl(self.ladoDireito, -1, "", style=wx.TE_MULTILINE|wx.TE_READONLY)
+        self.btLimpar = wx.Button(self.ladoDireito, -1, "Limpar", style=wx.BU_LEFT)
 
         self.__set_properties()
         self.__do_layout()
@@ -146,7 +147,7 @@ class HTMain(wx.Frame):
         self.Bind(wx.EVT_MENU, self.alternaComunicacao, id=ID_COMUNIC)
         self.Bind(wx.EVT_MENU, self.sobreHandtalks, id=ID_SOBRE)
         self.Bind(wx.EVT_MENU, self.sair, id=ID_SAIR)
-        self.Bind(wx.EVT_CHOICE, self.trocouLetra, self.caixaLetras)
+        self.Bind(wx.EVT_BUTTON, self.limpaHistorico, self.btLimpar)
         # end wxGlade
 
         # Mais eventos
@@ -164,7 +165,7 @@ class HTMain(wx.Frame):
     def __set_properties(self):
         # begin wxGlade: HTMain.__set_properties
         self.SetTitle("Hand Talks!")
-        self.SetSize(wx.DLG_SZE(self, (341, 299)))
+        self.SetSize(wx.DLG_SZE(self, (340, 298)))
         self.SetBackgroundColour(wx.SystemSettings_GetColour(wx.SYS_COLOUR_3DFACE))
         self.janela_statusbar.SetStatusWidths([-1, 80, 60, 20, 20, 20, 140])
         # statusbar fields
@@ -175,17 +176,15 @@ class HTMain(wx.Frame):
         self.janela_toolbar.Realize()
         self.resposta.SetToolTipString("Resposta da luva")
         self.resposta.Enable(False)
-        self.caixaLetras.SetMinSize((50, 21))
-        self.caixaLetras.SetSelection(0)
         self.letraExibida.SetFont(wx.Font(150, wx.DECORATIVE, wx.NORMAL, wx.NORMAL, 0, ""))
-        self.historico.SetFont(wx.Font(10, wx.DECORATIVE, wx.NORMAL, wx.NORMAL, 0, ""))
+        self.historico.SetFont(wx.Font(30, wx.DECORATIVE, wx.NORMAL, wx.NORMAL, 0, ""))
         self.historico.SetToolTipString(u"Histórico da comunicação com a luva")
         self.historico.Enable(False)
         # end wxGlade
 
         # Popula a caixa de letras
-        self.caixaLetras.AppendItems( [chr (ord('A') + x) for x in range (26)] )
-        self.caixaLetras.Select(0)
+#        self.caixaLetras.AppendItems( [chr (ord('A') + x) for x in range (26)] )
+#        self.caixaLetras.Select(0)
         
         # Vai ser um timer
         self.timerStatus = None
@@ -202,9 +201,8 @@ class HTMain(wx.Frame):
         sizerPrincipal = wx.BoxSizer(wx.VERTICAL)
         sizerSaida = wx.StaticBoxSizer(self.sizerSaida_staticbox, wx.VERTICAL)
         sizerEntrada = wx.StaticBoxSizer(self.sizerEntrada_staticbox, wx.HORIZONTAL)
-        sizerEntrada.Add(self.resposta, 1, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 3)
-        sizerEntrada.Add(self.caixaLetras, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL|wx.FIXED_MINSIZE, 3)
-        sizerPrincipal.Add(sizerEntrada, 0, wx.ALL|wx.EXPAND, 3)
+        sizerEntrada.Add(self.resposta, 1, wx.ALL|wx.EXPAND|wx.ALIGN_CENTER_VERTICAL|wx.SHAPED|wx.ADJUST_MINSIZE, 3)
+        sizerPrincipal.Add(sizerEntrada, 0, wx.ALL|wx.EXPAND|wx.SHAPED|wx.ADJUST_MINSIZE, 3)
         sizerSaida.Add((1, 1), 1, wx.ADJUST_MINSIZE, 0)
         sizerSaida.Add(self.letraExibida, 0, wx.ALL|wx.EXPAND|wx.ADJUST_MINSIZE, 3)
         sizerSaida.Add((1, 1), 1, wx.ADJUST_MINSIZE, 0)
@@ -214,6 +212,7 @@ class HTMain(wx.Frame):
         sizerPrincipal.Fit(self.ladoEsquerdo)
         sizerPrincipal.SetSizeHints(self.ladoEsquerdo)
         sizerHistorico.Add(self.historico, 1, wx.ALL|wx.EXPAND, 3)
+        sizerHistorico.Add(self.btLimpar, 0, wx.ALL, 3)
         self.ladoDireito.SetAutoLayout(True)
         self.ladoDireito.SetSizer(sizerHistorico)
         sizerHistorico.Fit(self.ladoDireito)
@@ -278,10 +277,11 @@ class HTMain(wx.Frame):
         self.letraExibida.SetLabel (letra)
         self.reportaErro(u'Reproduzindo Áudio...')
 
-        if not self.IsMaximized():
-            self.GetSizer().SetSizeHints(self)
-            self.Refresh()
-            self.Update()
+
+#        if not self.IsMaximized():
+#            self.GetSizer().SetSizeHints(self)
+#            self.Refresh()
+#            self.Update()
         
         # Toca wav, mp3 etc, usando pymedia
 #        if tocador.toca_tudo ("audio/" + letra):
@@ -302,7 +302,7 @@ class HTMain(wx.Frame):
 
         
     def trocouLetra(self, event): # wxGlade: HTMain.<event_handler>
-        letra = self.caixaLetras.GetStringSelection()
+#        letra = self.caixaLetras.GetStringSelection()
         self.exibeLetra (letra)
         
 
@@ -383,7 +383,7 @@ class HTMain(wx.Frame):
     def sobreHandtalks(self, event): # wxGlade: HTMain.<event_handler>
         dlg = wx.MessageDialog(self,
 u"""HandTalks!
-Versão 0.2
+Versão 0.5
 
 Tradutor do alfabeto LIBRAS.
 
@@ -413,9 +413,6 @@ Orientador: Prof. Jorge Kinoshita""",
         
     def OnSerialRead(self, event):
         """Handle input from the serial port."""
-        text = ''.join([(' ' <= c < chr(128)) and c or '<%d>' % ord(c)  for c in event.data])
-        self.resposta.SetValue (text)
-
         # Extrai valores dos ADs
         fingers = [ int(x) for x in event.data[1:-3].split ('#') ]
 
@@ -426,7 +423,18 @@ Orientador: Prof. Jorge Kinoshita""",
             bit = (hex & 2**i) > 0
             contacts.append (bit)
 
-        result = translator.translate (fingers, contacts)
+        result = self.translator.translate (fingers, contacts)
+        text = ''.join([(' ' <= c < chr(128)) and c or '<%d>' % ord(c)  for c in event.data])
+#        text += "\nContraído:" + str(self.translator.u_in[0])
+#        text += "\nRelaxado: " + str(self.translator.u_in[1])
+#        text += "\nEsticado: " + str(self.translator.u_in[2])
+#        text += "\nContraído:" + 5*" %3.2f%%"
+#        text += "\nRelaxado: " + 5*" %3.2f%%"
+#        text += "\nEsticado: " + 5*" %3.2f%%"
+#        lista = self.translator.u_in[0]
+#        lista.extend (self.translator.u_in[1])
+#        lista.extend (self.translator.u_in[2])
+        self.resposta.SetValue (text)
 
         if result == self.last_letter:
             self.letter_count += 1
@@ -434,16 +442,25 @@ Orientador: Prof. Jorge Kinoshita""",
             self.last_letter = result
             self.letter_count = 1
 
-        if self.letter_count == 10 and result is not None:
-            if result == '<CR>':
-                result = '\n'
-            elif result == '<SP>':
-                result = ' '
-            elif result == '<BS>':
-                result = self.historico.GetText()[:-1]
-                self.historico.Clear()
-                
-            self.historico.AppendText (result)
+        if self.letter_count == 20 and not result == self.last_valid_letter:
+            if result is not None:
+                if result == '<CR>':
+                    result = '\n'
+                    letra = u"\u21B5"
+                elif result == '<SP>':
+                    result = ' '
+                    letra = u'_'
+                elif result == '<BS>':
+                    result = self.historico.GetValue()[:-1]
+                    self.historico.Clear()
+                    letra = u'\u2190'
+                else:
+                    letra = result
+                    
+                self.exibeLetra (letra)
+                self.historico.AppendText (result)
+
+            self.last_valid_letter = result
     # OnSerialRead
 
 
@@ -467,6 +484,10 @@ Orientador: Prof. Jorge Kinoshita""",
             
 
 
+    def limpaHistorico(self, event): # wxGlade: HTMain.<event_handler>
+        self.historico.Clear()
+
 # end of class HTMain
+
 
 
