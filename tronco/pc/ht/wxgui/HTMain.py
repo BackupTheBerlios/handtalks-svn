@@ -289,6 +289,7 @@ class HTMain(wx.Frame):
 #        else:
 #            self.reportaErro(u'Falha na execução!')
 
+    def tocaLetra (self, letra=None):
         # Toca apenas wav, mas usa o próprio wxPython
         try:
             sound = wx.SoundFromData( open("audio/" + letra + ".wav", 'rb').read() )
@@ -444,13 +445,23 @@ Orientador: Prof. Jorge Kinoshita""",
 
         if self.letter_count == 20 and not result == self.last_valid_letter:
             if result is not None:
-                if result == '<CR>':
+                self.tocaLetra (result)
+
+                if result == 'CR':
                     result = '\n'
                     letra = u"\u21B5"
-                elif result == '<SP>':
+                elif result == 'VI':
+                    result = letra = ','
+                elif result == 'PT':
+                    result = letra = '.'
+                elif result == 'EX':
+                    result = letra = '!'
+                elif result == 'IN':
+                    result = letra = '?'
+                elif result == 'SP':
                     result = ' '
-                    letra = u'_'
-                elif result == '<BS>':
+                    letra = '_'
+                elif result == 'BS':
                     result = self.historico.GetValue()[:-1]
                     self.historico.Clear()
                     letra = u'\u2190'
