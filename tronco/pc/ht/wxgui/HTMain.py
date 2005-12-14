@@ -138,7 +138,7 @@ class HTMain(wx.Frame):
         self.resposta = wx.TextCtrl(self.ladoEsquerdo, -1, "", style=wx.TE_MULTILINE|wx.TE_READONLY)
         self.letraExibida = wx.StaticText(self.ladoEsquerdo, -1, "A", style=wx.ALIGN_CENTRE|wx.ST_NO_AUTORESIZE)
         self.historico = wx.TextCtrl(self.ladoDireito, -1, "", style=wx.TE_MULTILINE|wx.TE_READONLY)
-        self.btLimpar = wx.Button(self.ladoDireito, -1, "Limpar", style=wx.BU_LEFT)
+        self.btLimpar = wx.Button(self.ladoDireito, -1, "Limpar")
 
         self.__set_properties()
         self.__do_layout()
@@ -165,9 +165,9 @@ class HTMain(wx.Frame):
     def __set_properties(self):
         # begin wxGlade: HTMain.__set_properties
         self.SetTitle("Hand Talks!")
-        self.SetSize(wx.DLG_SZE(self, (340, 298)))
+        self.SetSize(wx.DLG_SZE(self, (340, 296)))
         self.SetBackgroundColour(wx.SystemSettings_GetColour(wx.SYS_COLOUR_3DFACE))
-        self.janela_statusbar.SetStatusWidths([-1, 80, 60, 20, 20, 20, 140])
+        self.janela_statusbar.SetStatusWidths([-1, 80, 60, 20, 20, 20, 80])
         # statusbar fields
         janela_statusbar_fields = ["", "", "", "", "", "", ""]
         for i in range(len(janela_statusbar_fields)):
@@ -201,8 +201,8 @@ class HTMain(wx.Frame):
         sizerPrincipal = wx.BoxSizer(wx.VERTICAL)
         sizerSaida = wx.StaticBoxSizer(self.sizerSaida_staticbox, wx.VERTICAL)
         sizerEntrada = wx.StaticBoxSizer(self.sizerEntrada_staticbox, wx.HORIZONTAL)
-        sizerEntrada.Add(self.resposta, 1, wx.ALL|wx.EXPAND|wx.ALIGN_CENTER_VERTICAL|wx.SHAPED|wx.ADJUST_MINSIZE, 3)
-        sizerPrincipal.Add(sizerEntrada, 0, wx.ALL|wx.EXPAND|wx.SHAPED|wx.ADJUST_MINSIZE, 3)
+        sizerEntrada.Add(self.resposta, 1, wx.ALL|wx.EXPAND|wx.ALIGN_CENTER_VERTICAL, 3)
+        sizerPrincipal.Add(sizerEntrada, 0, wx.ALL|wx.EXPAND, 3)
         sizerSaida.Add((1, 1), 1, wx.ADJUST_MINSIZE, 0)
         sizerSaida.Add(self.letraExibida, 0, wx.ALL|wx.EXPAND|wx.ADJUST_MINSIZE, 3)
         sizerSaida.Add((1, 1), 1, wx.ADJUST_MINSIZE, 0)
