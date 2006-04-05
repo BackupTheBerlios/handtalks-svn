@@ -209,14 +209,14 @@
                         <object class="wxBoxSizer" name="sizerPrincipal" base="EditBoxSizer">
                             <orient>wxVERTICAL</orient>
                             <object class="sizeritem">
-                                <flag>wxALL|wxEXPAND|wxSHAPED|wxADJUST_MINSIZE</flag>
+                                <flag>wxALL|wxEXPAND</flag>
                                 <border>3</border>
                                 <option>0</option>
                                 <object class="wxStaticBoxSizer" name="sizerEntrada" base="EditStaticBoxSizer">
                                     <orient>wxHORIZONTAL</orient>
                                     <label>Entrada</label>
                                     <object class="sizeritem">
-                                        <flag>wxALL|wxEXPAND|wxALIGN_CENTER_VERTICAL|wxSHAPED|wxADJUST_MINSIZE</flag>
+                                        <flag>wxALL|wxEXPAND|wxALIGN_CENTER_VERTICAL</flag>
                                         <border>3</border>
                                         <option>1</option>
                                         <object class="wxTextCtrl" name="resposta" base="EditTextCtrl">
