@@ -49,7 +49,7 @@ ID_AJUSTAR = wx.NewId()
 TIMEOUT_SERIAL = 2 # segundos
 
 """
-# Confere se está na pasta wxgui
+# Confere se estï¿½na pasta wxgui
 import sys,os
 caminho=os.path.abspath (os.path.dirname (sys.argv[0]))
 if not caminho.endswith ("wxgui"):
@@ -59,12 +59,12 @@ os.chdir (caminho)
 
 class HTMain(wx.Frame):
     def __init__(self, *args, **kwds):
-        # Última leitura
+        # ï¿½tima leitura
         self.last_letter = ''
         self.last_valid_letter = ''
         self.letter_count = 0
 
-        # Valores padrões da serial
+        # Valores padrï¿½s da serial
         self.serial = serial.Serial()
         self.serial.port = 0;
         self.serial.baudrate = 19200;
@@ -92,8 +92,8 @@ class HTMain(wx.Frame):
         self.divisor = wx.SplitterWindow(self, -1, style=wx.SP_PERMIT_UNSPLIT)
         self.ladoDireito = wx.Panel(self.divisor, -1)
         self.ladoEsquerdo = wx.Panel(self.divisor, -1)
-        self.sizerSaida_staticbox = wx.StaticBox(self.ladoEsquerdo, -1, u"Saída")
-        self.sizerHistorico_staticbox = wx.StaticBox(self.ladoDireito, -1, u"Histórico")
+        self.sizerSaida_staticbox = wx.StaticBox(self.ladoEsquerdo, -1, u"Saï¿½a")
+        self.sizerHistorico_staticbox = wx.StaticBox(self.ladoDireito, -1, u"Histï¿½ico")
         self.sizerEntrada_staticbox = wx.StaticBox(self.ladoEsquerdo, -1, "Entrada")
         
         # Menu Bar
@@ -107,14 +107,14 @@ class HTMain(wx.Frame):
         wxglade_tmp_menu.Append(ID_GRAVAR_COMO, "Gravar &Como...", "", wx.ITEM_NORMAL)
         wxglade_tmp_menu.AppendSeparator()
         wxglade_tmp_menu.Append(ID_AJUSTAR, "Ajus&tar...", "", wx.ITEM_NORMAL)
-        self.janela_menubar.Append(wxglade_tmp_menu, u"&Usuários")
+        self.janela_menubar.Append(wxglade_tmp_menu, u"&Usuï¿½ios")
         wxglade_tmp_menu = wx.Menu()
         wxglade_tmp_menu.Append(ID_CONFIG, "Confi&gurar...", "Ajusta detalhes da porta serial", wx.ITEM_NORMAL)
         wxglade_tmp_menu.AppendSeparator()
-        wxglade_tmp_menu.Append(ID_COMUNIC, "&Comunicar", u"Inicia/Interrompe comunicação", wx.ITEM_CHECK)
-        self.janela_menubar.Append(wxglade_tmp_menu, u"&Comunicação")
+        wxglade_tmp_menu.Append(ID_COMUNIC, "&Comunicar", u"Inicia/Interrompe comunicaï¿½o", wx.ITEM_CHECK)
+        self.janela_menubar.Append(wxglade_tmp_menu, u"&Comunicaï¿½o")
         wxglade_tmp_menu = wx.Menu()
-        wxglade_tmp_menu.Append(ID_SOBRE, "So&bre...", u"Informações sobre o HandTalks!", wx.ITEM_NORMAL)
+        wxglade_tmp_menu.Append(ID_SOBRE, "So&bre...", u"Informaï¿½es sobre o HandTalks!", wx.ITEM_NORMAL)
         wxglade_tmp_menu.AppendSeparator()
         wxglade_tmp_menu.Append(ID_SAIR, "&Sair", "Fecha o HandTalks!", wx.ITEM_NORMAL)
         self.janela_menubar.Append(wxglade_tmp_menu, "&Geral")
@@ -124,18 +124,18 @@ class HTMain(wx.Frame):
         # Tool Bar
         self.janela_toolbar = wx.ToolBar(self, -1, style=wx.TB_HORIZONTAL|wx.TB_FLAT|wx.TB_DOCKABLE)
         self.SetToolBar(self.janela_toolbar)
-        self.janela_toolbar.AddLabelTool(ID_ABRIR, u"Abrir usuário...", wx.Bitmap("imagem/Abrir.png", wx.BITMAP_TYPE_ANY), wx.NullBitmap, wx.ITEM_NORMAL, u"Abrir usuário...", u"Carrega os ajustes da luva de um usuário")
-        self.janela_toolbar.AddLabelTool(ID_GRAVAR, u"Gravar usuário...", wx.Bitmap("imagem/Gravar.png", wx.BITMAP_TYPE_ANY), wx.NullBitmap, wx.ITEM_NORMAL, u"Gravar usuário...", u"Grava os ajustes da luva de um usuário")
+        self.janela_toolbar.AddLabelTool(ID_ABRIR, u"Abrir usuï¿½io...", wx.Bitmap("imagem/Abrir.png", wx.BITMAP_TYPE_ANY), wx.NullBitmap, wx.ITEM_NORMAL, u"Abrir usuï¿½io...", u"Carrega os ajustes da luva de um usuï¿½io")
+        self.janela_toolbar.AddLabelTool(ID_GRAVAR, u"Gravar usuï¿½io...", wx.Bitmap("imagem/Gravar.png", wx.BITMAP_TYPE_ANY), wx.NullBitmap, wx.ITEM_NORMAL, u"Gravar usuï¿½io...", u"Grava os ajustes da luva de um usuï¿½io")
         self.janela_toolbar.AddSeparator()
-        self.janela_toolbar.AddLabelTool(ID_AJUSTAR, "Ajustar...", wx.Bitmap("imagem/Usuario.png", wx.BITMAP_TYPE_ANY), wx.NullBitmap, wx.ITEM_NORMAL, "Ajustar...", u"Faz o ajuste das letras com a mão do usuário")
+        self.janela_toolbar.AddLabelTool(ID_AJUSTAR, "Ajustar...", wx.Bitmap("imagem/Usuario.png", wx.BITMAP_TYPE_ANY), wx.NullBitmap, wx.ITEM_NORMAL, "Ajustar...", u"Faz o ajuste das letras com a mï¿½ do usuï¿½io")
         self.janela_toolbar.AddSeparator()
         self.janela_toolbar.AddLabelTool(ID_CONFIG, "Configurar...", wx.Bitmap("imagem/Config.png", wx.BITMAP_TYPE_ANY), wx.NullBitmap, wx.ITEM_NORMAL, "Configurar...", "Ajusta detalhes da porta serial")
-        self.janela_toolbar.AddLabelTool(ID_COMUNIC, "Comunicar", wx.Bitmap("imagem/Parado.png", wx.BITMAP_TYPE_ANY), wx.NullBitmap, wx.ITEM_CHECK, "Comunicar", u"Inicia/Interrompe comunicação")
+        self.janela_toolbar.AddLabelTool(ID_COMUNIC, "Comunicar", wx.Bitmap("imagem/Parado.png", wx.BITMAP_TYPE_ANY), wx.NullBitmap, wx.ITEM_CHECK, "Comunicar", u"Inicia/Interrompe comunicaï¿½o")
         self.janela_toolbar.AddSeparator()
-        self.janela_toolbar.AddLabelTool(ID_SOBRE, "Sobre...", wx.Bitmap("imagem/Info.png", wx.BITMAP_TYPE_ANY), wx.NullBitmap, wx.ITEM_NORMAL, "Sobre...", u"Informações sobre o HandTalks!")
+        self.janela_toolbar.AddLabelTool(ID_SOBRE, "Sobre...", wx.Bitmap("imagem/Info.png", wx.BITMAP_TYPE_ANY), wx.NullBitmap, wx.ITEM_NORMAL, "Sobre...", u"Informaï¿½es sobre o HandTalks!")
         self.janela_toolbar.AddLabelTool(ID_SAIR, "Sair", wx.Bitmap("imagem/Fechar.png", wx.BITMAP_TYPE_ANY), wx.NullBitmap, wx.ITEM_NORMAL, "Sair", "Fecha o HandTalks!")
         # Tool Bar end
-        self.resposta = wx.TextCtrl(self.ladoEsquerdo, -1, "", style=wx.TE_MULTILINE|wx.TE_READONLY)
+        self.resposta = wx.TextCtrl(self.ladoEsquerdo, -1, "", style=wx.TE_READONLY)
         self.letraExibida = wx.StaticText(self.ladoEsquerdo, -1, "A", style=wx.ALIGN_CENTRE|wx.ST_NO_AUTORESIZE)
         self.historico = wx.TextCtrl(self.ladoDireito, -1, "", style=wx.TE_MULTILINE|wx.TE_READONLY)
         self.btLimpar = wx.Button(self.ladoDireito, -1, "Limpar")
@@ -156,7 +156,7 @@ class HTMain(wx.Frame):
         self.Bind(wx.EVT_TOOL_ENTER, self.mostraAjuda)
         self.Bind(EVT_SERIALRX, self.OnSerialRead)
 
-        # Associa um Ícone
+        # Associa um ï¿½one
         ib = wx.IconBundle()
         ib.AddIconFromFile("imagem/handtalks.ico",wx.BITMAP_TYPE_ANY)
         self.SetIcons(ib)
@@ -178,7 +178,7 @@ class HTMain(wx.Frame):
         self.resposta.Enable(False)
         self.letraExibida.SetFont(wx.Font(150, wx.DECORATIVE, wx.NORMAL, wx.NORMAL, 0, ""))
         self.historico.SetFont(wx.Font(30, wx.DECORATIVE, wx.NORMAL, wx.NORMAL, 0, ""))
-        self.historico.SetToolTipString(u"Histórico da comunicação com a luva")
+        self.historico.SetToolTipString(u"Histï¿½ico da comunicaï¿½o com a luva")
         self.historico.Enable(False)
         # end wxGlade
 
@@ -201,7 +201,7 @@ class HTMain(wx.Frame):
         sizerPrincipal = wx.BoxSizer(wx.VERTICAL)
         sizerSaida = wx.StaticBoxSizer(self.sizerSaida_staticbox, wx.VERTICAL)
         sizerEntrada = wx.StaticBoxSizer(self.sizerEntrada_staticbox, wx.HORIZONTAL)
-        sizerEntrada.Add(self.resposta, 1, wx.ALL|wx.EXPAND|wx.ALIGN_CENTER_VERTICAL, 3)
+        sizerEntrada.Add(self.resposta, 1, wx.ALL|wx.EXPAND|wx.ALIGN_CENTER_VERTICAL|wx.SHAPED|wx.ADJUST_MINSIZE, 3)
         sizerPrincipal.Add(sizerEntrada, 0, wx.ALL|wx.EXPAND, 3)
         sizerSaida.Add((1, 1), 1, wx.ADJUST_MINSIZE, 0)
         sizerSaida.Add(self.letraExibida, 0, wx.ALL|wx.EXPAND|wx.ADJUST_MINSIZE, 3)
@@ -266,7 +266,7 @@ class HTMain(wx.Frame):
         if (dlg.ShowModal() == wx.ID_OK):
             self.atualizaStatusSerial()
         else:
-            self.reportaErro (u"Operação cancelada!")
+            self.reportaErro (u"Operaï¿½o cancelada!")
 
         dlg.Destroy()
 
@@ -275,7 +275,7 @@ class HTMain(wx.Frame):
             letra = ''
             
         self.letraExibida.SetLabel (letra)
-        self.reportaErro(u'Reproduzindo Áudio...')
+        self.reportaErro(u'Reproduzindo ï¿½dio...')
 
 
 #        if not self.IsMaximized():
@@ -287,18 +287,18 @@ class HTMain(wx.Frame):
 #        if tocador.toca_tudo ("audio/" + letra):
 #            self.reportaErro()
 #        else:
-#            self.reportaErro(u'Falha na execução!')
+#            self.reportaErro(u'Falha na execuï¿½o!')
 
     def tocaLetra (self, letra=None):
-        # Toca apenas wav, mas usa o próprio wxPython
+        # Toca apenas wav, mas usa o prï¿½rio wxPython
         try:
             sound = wx.SoundFromData( open("audio/" + letra + ".wav", 'rb').read() )
             sound.Play(wx.SOUND_ASYNC)
             wx.YieldIfNeeded()
         except NotImplementedError, v:
-            self.reportaErro(u'Recurso não implementado!')
+            self.reportaErro(u'Recurso nï¿½ implementado!')
         except IOError, v:
-            self.reportaErro(u'Som não encontrado!')
+            self.reportaErro(u'Som nï¿½ encontrado!')
 
 
         
@@ -310,7 +310,7 @@ class HTMain(wx.Frame):
     def fechaAplicacao(self, event): # wxGlade: HTMain.<event_handler>
         if event.CanVeto:
             dlg = wx.MessageDialog(self, u"Tem certeza que deseja sair?",
-                                   u'Confirmação',
+                                   u'Confirmaï¿½o',
                                    wx.YES_NO | wx.ICON_QUESTION
                                    )
             veta = dlg.ShowModal() == wx.ID_NO
@@ -320,7 +320,7 @@ class HTMain(wx.Frame):
             
         if self.timerStatus is not None:
             self.timerStatus.cancel()
-        self.alternaComunicacao (event, desejo=False) # Força o "desligamento" da serial
+        self.alternaComunicacao (event, desejo=False) # Forï¿½ o "desligamento" da serial
         self.Destroy()
 
 
@@ -330,7 +330,7 @@ class HTMain(wx.Frame):
 
     def enviarComando(self, event): # wxGlade: HTMain.<event_handler>
         if not self.serial.isOpen():
-            self.reportaErro(u"Porta não está aberta!")
+            self.reportaErro(u"Porta nï¿½ estï¿½aberta!")
             return
             
         self.serial.write (str(self.comando.GetValue()) + '\r\n')
@@ -384,11 +384,11 @@ class HTMain(wx.Frame):
     def sobreHandtalks(self, event): # wxGlade: HTMain.<event_handler>
         dlg = wx.MessageDialog(self,
 u"""HandTalks!
-Versão 0.5
+Versï¿½ 0.5
 
 Tradutor do alfabeto LIBRAS.
 
-Alunos: André, Hilton e Hugo.
+Alunos: Andrï¿½ Hilton e Hugo.
 Orientador: Prof. Jorge Kinoshita""",
                                 'Sobre...', wx.OK | wx.ICON_INFORMATION )
         dlg.ShowModal()
@@ -426,10 +426,10 @@ Orientador: Prof. Jorge Kinoshita""",
 
         result = self.translator.translate (fingers, contacts)
         text = ''.join([(' ' <= c < chr(128)) and c or '<%d>' % ord(c)  for c in event.data])
-#        text += "\nContraído:" + str(self.translator.u_in[0])
+#        text += "\nContraï¿½o:" + str(self.translator.u_in[0])
 #        text += "\nRelaxado: " + str(self.translator.u_in[1])
 #        text += "\nEsticado: " + str(self.translator.u_in[2])
-#        text += "\nContraído:" + 5*" %3.2f%%"
+#        text += "\nContraï¿½o:" + 5*" %3.2f%%"
 #        text += "\nRelaxado: " + 5*" %3.2f%%"
 #        text += "\nEsticado: " + 5*" %3.2f%%"
 #        lista = self.translator.u_in[0]

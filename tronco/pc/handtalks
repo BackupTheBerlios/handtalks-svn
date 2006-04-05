@@ -1,5 +1,5 @@
 #!/bin/sh
-HTDIR=.
+HTDIR=/home/acdcp/projetos/handtalks-pc
 
 cd $HTDIR
 python handtalks.pyw
